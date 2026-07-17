@@ -1,0 +1,38 @@
+/* ── Agentic Usage design tokens (Terminal treatment) ── */
+.agentic-usage {
+  --bg: #0a0c10; --panel: #14181f; --panel-2: #1a1f28;
+  --line: rgba(255,255,255,.07); --line-2: rgba(255,255,255,.12);
+  --txt: #e9eef4; --txt-mid: #98a3b0; --txt-low: #5d6773;
+  --coral: #f2643d; --teal: #28b6a4; --cyan: #3aa6c2; --green: #52b487;
+  --gold: #e6b24a; --silver: #b9c4d0; --bronze: #cd8a55; --red: #e0584c;
+  --sans: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --display: 'JetBrains Mono', ui-monospace, monospace;
+  width: 100%; height: 100%;
+  font-family: var(--sans); color: var(--txt);
+  -webkit-font-smoothing: antialiased; box-sizing: border-box;
+}
+.agentic-usage * { box-sizing: border-box; }
+
+.cu-stat-root {
+  position: relative; width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px 18px; font-family: var(--sans); color: var(--txt);
+}
+.cu-stat-label { font-family: var(--mono); text-transform: uppercase; letter-spacing: .14em; font-size: 11px; color: var(--txt-low); font-weight: 500; }
+.cu-stat-bigrow { display: flex; align-items: baseline; gap: 9px; margin-top: 6px; white-space: nowrap; }
+.cu-stat-big { font-family: var(--display); font-variant-numeric: tabular-nums; letter-spacing: -.01em; font-size: 40px; font-weight: 600; }
+.cu-stat-unit { font-size: .5em; color: var(--txt-mid); font-weight: 500; margin-left: 1px; }
+.cu-stat-suffix { font-size: 13px; color: var(--txt-mid); }
+
+.cu-stat-bar { margin-top: 14px; height: 6px; background: rgba(255,255,255,.08); border-radius: 6px; overflow: hidden; }
+.cu-stat-bar-fill { display: block; height: 100%; border-radius: 6px; }
+.cu-stat-foot { font-family: var(--mono); font-size: 10.5px; color: var(--txt-low); margin-top: 9px; }
+
+.cu-stat-kv { margin-top: 14px; padding-top: 11px; border-top: 1px solid var(--line); display: grid; gap: 9px; }
+.cu-kv-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.cu-kv-k { font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; color: var(--txt-low); white-space: nowrap; }
+.cu-kv-v { font-family: var(--mono); font-size: 11px; color: var(--txt); white-space: nowrap; }
+
+.cu-status { display: flex; align-items: center; justify-content: center; height: 100%; font-family: var(--mono); font-size: 12px; color: var(--txt-mid); text-align: center; }

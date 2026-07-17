@@ -1,0 +1,50 @@
+<form class="splunk-formatter-section" section-label="Leaderboard">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Team Leaderboard"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Show Podium" help="Show the top-3 trophy podium above the rows">
+        <splunk-radio-input name="{{VIZ_NAMESPACE}}.showPodium" value="true">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </splunk-radio-input>
+    </splunk-control-group>
+    <splunk-control-group label="Rows Per Page" help="Maximum ranked rows per page (auto-fits to the panel height, capped at this value)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.rowsPerPage" value="8"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Metric">
+    <splunk-control-group label="Metric Field" help="SPL column ranked + shown as the big value/bar">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.metricField" value="Tokens (M)"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Metric Column Label" help="Header text for the metric column">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.metricColLabel" value="Tokens (M)"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Metric Label" help="Short label under the podium value (e.g. tokens)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.metricLabel" value="tokens"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Metric Unit" help="Unit appended to the podium value (e.g. M)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.metricUnit" value="M"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Metric Prefix" help="Prefix before the podium value (e.g. $)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.metricPrefix" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Field Mapping">
+    <splunk-control-group label="Name Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.nameField" value="User"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Service Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.serviceField" value="Service"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Cost Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.costField" value="Cost ($)"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Cache Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.cacheField" value="Cache %"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

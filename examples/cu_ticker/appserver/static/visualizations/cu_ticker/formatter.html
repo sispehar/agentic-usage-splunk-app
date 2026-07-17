@@ -1,0 +1,36 @@
+<form class="splunk-formatter-section" section-label="Ticker">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="SESSIONS"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Scroll Speed">
+        <splunk-radio-input name="{{VIZ_NAMESPACE}}.scrollSpeed" value="medium">
+            <option value="slow">Slow</option>
+            <option value="medium">Medium</option>
+            <option value="fast">Fast</option>
+        </splunk-radio-input>
+    </splunk-control-group>
+    <splunk-control-group label="Max Items" help="Maximum number of ticker entries">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.maxItems" value="30"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Fields">
+    <splunk-control-group label="Kind Field" help="Column holding the entry kind (PROMPT / ERROR / COMPACT / START)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.kindField" value="kind"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Text Field" help="Column holding the entry text">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.textField" value="text"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Colors">
+    <splunk-control-group label="Accent Colour" help="Title and dot separators (hex)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.accentColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Live Badge Colour" help="Fill of the pulsing LIVE badge (hex)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.liveColor" value="#f2643d"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

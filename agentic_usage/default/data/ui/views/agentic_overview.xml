@@ -1,0 +1,566 @@
+<dashboard version="2" theme="dark">
+    <label>Overview</label>
+    <description>Team observability for agentic coding harnesses — tokens, cost, adoption</description>
+    <definition><![CDATA[{
+    "title": "Agentic Usage · Overview",
+    "description": "",
+    "inputs": {
+        "input_time": {
+            "options": {
+                "defaultValue": "-7d@h,now",
+                "token": "tr"
+            },
+            "title": "Time Range",
+            "type": "input.timerange"
+        },
+        "input_user": {
+            "dataSources": {
+                "primary": "ds_userlist"
+            },
+            "options": {
+                "defaultValue": "All",
+                "items": [
+                    {
+                        "label": "All Users",
+                        "value": "All"
+                    }
+                ],
+                "token": "selected_user"
+            },
+            "title": "User",
+            "type": "input.dropdown"
+        },
+        "input_service": {
+            "options": {
+                "defaultValue": "All",
+                "items": [
+                    {
+                        "label": "All Harnesses",
+                        "value": "All"
+                    },
+                    {
+                        "label": "Claude Code",
+                        "value": "claude-code"
+                    },
+                    {
+                        "label": "Claude Desktop",
+                        "value": "claude-code-desktop"
+                    },
+                    {
+                        "label": "Cowork",
+                        "value": "cowork"
+                    },
+                    {
+                        "label": "Gemini CLI",
+                        "value": "gemini-cli"
+                    },
+                    {
+                        "label": "Codex",
+                        "value": "codex"
+                    }
+                ],
+                "token": "selected_service"
+            },
+            "title": "Harness",
+            "type": "input.dropdown"
+        },
+        "input_theme": {
+            "options": {
+                "defaultValue": "#0a0c10",
+                "items": [
+                    {
+                        "label": "Dark",
+                        "value": "#0a0c10"
+                    },
+                    {
+                        "label": "Light",
+                        "value": "#f4f6f8"
+                    }
+                ],
+                "token": "theme"
+            },
+            "title": "Theme",
+            "type": "input.dropdown"
+        }
+    },
+    "defaults": {
+        "dataSources": {}
+    },
+    "visualizations": {
+        "viz_users": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "DISTINCT USERS",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#f2643d"
+            },
+            "dataSources": {
+                "primary": "ds_users"
+            }
+        },
+        "viz_tokens": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "TOTAL TOKENS",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "true",
+                "agentic_usage.cu_kpi.accentColor": "#28b6a4"
+            },
+            "dataSources": {
+                "primary": "ds_tokens"
+            }
+        },
+        "viz_cost": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "TOTAL COST",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#f2643d"
+            },
+            "dataSources": {
+                "primary": "ds_cost"
+            }
+        },
+        "viz_loc": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "NET LINES OF CODE",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.unit": "K",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#e6b24a"
+            },
+            "dataSources": {
+                "primary": "ds_loc"
+            }
+        },
+        "viz_cache": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "CACHE HIT RATIO",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.unit": "%",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#52b487"
+            },
+            "dataSources": {
+                "primary": "ds_cache"
+            }
+        },
+        "viz_leaderboard": {
+            "type": "agentic_usage.cu_leaderboard",
+            "options": {
+                "agentic_usage.cu_leaderboard.theme": "$theme$",
+                "agentic_usage.cu_leaderboard.title": "Team Leaderboard",
+                "agentic_usage.cu_leaderboard.metricField": "Tokens (M)",
+                "agentic_usage.cu_leaderboard.metricColLabel": "Tokens (M)",
+                "agentic_usage.cu_leaderboard.metricLabel": "tokens",
+                "agentic_usage.cu_leaderboard.metricUnit": "M",
+                "agentic_usage.cu_leaderboard.nameField": "User",
+                "agentic_usage.cu_leaderboard.serviceField": "Service",
+                "agentic_usage.cu_leaderboard.costField": "Cost ($)",
+                "agentic_usage.cu_leaderboard.cacheField": "Cache %"
+            },
+            "dataSources": {
+                "primary": "ds_leaderboard"
+            }
+        },
+        "viz_area": {
+            "type": "agentic_usage.cu_area",
+            "options": {
+                "agentic_usage.cu_area.theme": "$theme$",
+                "agentic_usage.cu_area.title": "Token Usage by Hour",
+                "agentic_usage.cu_area.valueDivisor": "1000000",
+                "agentic_usage.cu_area.valueUnit": "M",
+                "agentic_usage.cu_area.readField": "cache_read",
+                "agentic_usage.cu_area.createField": "cache_creation",
+                "agentic_usage.cu_area.readLabel": "cache_read",
+                "agentic_usage.cu_area.createLabel": "cache_creation"
+            },
+            "dataSources": {
+                "primary": "ds_timeline"
+            }
+        },
+        "viz_ratelimit": {
+            "type": "agentic_usage.cu_stat",
+            "options": {
+                "agentic_usage.cu_stat.theme": "$theme$",
+                "agentic_usage.cu_stat.label": "Rate-limit · 429s",
+                "agentic_usage.cu_stat.bigField": "value",
+                "agentic_usage.cu_stat.accentColor": "#f2643d",
+                "agentic_usage.cu_stat.kv1Label": "peak hour",
+                "agentic_usage.cu_stat.kv1Field": "peak_hour",
+                "agentic_usage.cu_stat.kv2Label": "worst user",
+                "agentic_usage.cu_stat.kv2Field": "worst_user"
+            },
+            "dataSources": {
+                "primary": "ds_ratelimit"
+            }
+        },
+        "viz_adoption": {
+            "type": "agentic_usage.cu_stat",
+            "options": {
+                "agentic_usage.cu_stat.theme": "$theme$",
+                "agentic_usage.cu_stat.label": "Team adoption",
+                "agentic_usage.cu_stat.bigField": "value",
+                "agentic_usage.cu_stat.suffix": "active devs",
+                "agentic_usage.cu_stat.accentColor": "#ffffff",
+                "agentic_usage.cu_stat.barField": "pct",
+                "agentic_usage.cu_stat.barColor": "#28b6a4",
+                "agentic_usage.cu_stat.footnoteField": "foot"
+            },
+            "dataSources": {
+                "primary": "ds_adoption"
+            }
+        },
+        "viz_models": {
+            "type": "agentic_usage.cu_donut",
+            "options": {
+                "agentic_usage.cu_donut.theme": "$theme$",
+                "agentic_usage.cu_donut.title": "AI Models Used",
+                "agentic_usage.cu_donut.sublabel": "token share",
+                "agentic_usage.cu_donut.labelField": "model",
+                "agentic_usage.cu_donut.valueField": "value",
+                "agentic_usage.cu_donut.valueDivisor": "1000000000",
+                "agentic_usage.cu_donut.valueUnit": "B"
+            },
+            "dataSources": {
+                "primary": "ds_models"
+            }
+        },
+        "viz_heatmap": {
+            "type": "agentic_usage.cu_heatmap",
+            "options": {
+                "agentic_usage.cu_heatmap.theme": "$theme$",
+                "agentic_usage.cu_heatmap.title": "Activity Heatmap",
+                "agentic_usage.cu_heatmap.subtitle": "tokens by date & hour",
+                "agentic_usage.cu_heatmap.dayField": "d",
+                "agentic_usage.cu_heatmap.hourField": "h",
+                "agentic_usage.cu_heatmap.valueField": "v",
+                "agentic_usage.cu_heatmap.valueDivisor": "1000000",
+                "agentic_usage.cu_heatmap.valueUnit": "M"
+            },
+            "dataSources": {
+                "primary": "ds_heatmap"
+            }
+        },
+        "viz_harness": {
+            "type": "agentic_usage.cu_donut",
+            "options": {
+                "agentic_usage.cu_donut.theme": "$theme$",
+                "agentic_usage.cu_donut.title": "Harness Mix",
+                "agentic_usage.cu_donut.sublabel": "token share",
+                "agentic_usage.cu_donut.labelField": "harness",
+                "agentic_usage.cu_donut.valueField": "value",
+                "agentic_usage.cu_donut.valueDivisor": "1000000000",
+                "agentic_usage.cu_donut.valueUnit": "B"
+            },
+            "dataSources": {
+                "primary": "ds_harness"
+            }
+        }
+    },
+    "dataSources": {
+        "ds_userlist": {
+            "type": "ds.search",
+            "options": {
+                "query": "| mstats count WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"service.name\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats count by \"user.email\" | rename \"user.email\" AS value | eval label=value | sort label | fields label value",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_users": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats count WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats dc(\"user.email\") AS value | appendpipe [| stats count | where count=0 | eval _status=\"Configure local/macros.conf to point at your telemetry indexes\", value=0]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_tokens": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS total WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(total) AS total | eval value=case(total>=1000000000, round(total/1000000000,1).\"B\", total>=1000000, round(total/1000000,1).\"M\", total>=1000, round(total/1000,1).\"K\", 1=1, tostring(total)) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"0\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_cost": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS total WHERE `agentic_metrics` metric_name=\"agentic.cost.usage\" BY \"user.email\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(total) AS total | eval value=\"$\".tostring(round(total,2),\"commas\") | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"$0\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_loc": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS lines WHERE `agentic_metrics` metric_name=\"agentic.lines_of_code.count\" BY \"user.email\" type \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if(type==\"added\",lines,0))) AS added sum(eval(if(type==\"removed\",lines,0))) AS removed | eval value=round((added-removed)/1000,1) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_cache": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"gen_ai.token.type\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if('gen_ai.token.type'==\"cache_read\",tokens,0))) AS c sum(eval(if('gen_ai.token.type'==\"input\" OR 'gen_ai.token.type'==\"cache_creation\",tokens,0))) AS f | eval value=if((c+f)>0, round(c/(c+f)*100,1), 0) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_leaderboard": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"gen_ai.token.type\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if('gen_ai.token.type'==\"cache_read\",tokens,0))) AS cacheRead sum(eval(if('gen_ai.token.type'==\"input\" OR 'gen_ai.token.type'==\"cache_creation\",tokens,0))) AS fresh sum(tokens) AS total_tokens values(\"service.name\") AS svc BY \"user.email\" | join type=outer \"user.email\" [| mstats sum(_value) AS cost WHERE `agentic_metrics` metric_name=\"agentic.cost.usage\" BY \"user.email\" \"service.name\" | stats sum(cost) AS cost BY \"user.email\"] | eval User='user.email' | eval s0=mvindex(svc,0) | eval Service=if(mvcount(svc)>=2, \"Multi\", `harness_label(s0)`) | eval \"Cache %\"=round(cacheRead/(cacheRead+fresh)*100,1) | eval \"Cost ($)\"=round(cost,2) | eval \"Tokens (M)\"=round(total_tokens/1000000,1) | sort - total_tokens | fields User Service \"Tokens (M)\" \"Cost ($)\" \"Cache %\" | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", User=\"\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_timeline": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" span=1h BY \"user.email\" \"gen_ai.token.type\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval tt=if('gen_ai.token.type' IN (\"reasoning\",\"tool\"), \"output\", 'gen_ai.token.type') | timechart span=1h sum(tokens) BY tt | eval hourLabel=strftime(_time,\"%a, %b %d · %H:%M\"), tickLabel=strftime(_time,\"%a %d\") | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_ratelimit": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=api_error | where tonumber('status_code')==429 OR match(coalesce(error,\"\"), \"(?i)rate.?limit\") | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats count AS value | appendcols [search `agentic_data` event.name=api_error | where tonumber('status_code')==429 OR match(coalesce(error,\"\"), \"(?i)rate.?limit\") | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval h=strftime(_time,\"%a %H:00\") | stats count by h | sort - count | head 1 | rename h AS peak_hour | fields peak_hour] | appendcols [search `agentic_data` event.name=api_error | where tonumber('status_code')==429 OR match(coalesce(error,\"\"), \"(?i)rate.?limit\") | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval wu=mvindex(split(coalesce('user.email','user.id'),\"@\"),0) | stats count by wu | sort - count | head 1 | rename wu AS worst_user | fields worst_user] | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_adoption": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats count WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"service.name\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats dc(\"user.email\") AS value | appendcols [| mstats count WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" earliest=0 latest=now BY \"user.email\" \"service.name\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats dc(\"user.email\") AS seats] | eval seats=if(isnull(seats),0,seats), pct=if(seats>0,round(value/seats*100),0), foot=value.\" of \".seats.\" seats · \".pct.\"% active\" | fields value seats pct foot | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_models": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"gen_ai.request.model\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(tokens) AS value by \"gen_ai.request.model\" | rename \"gen_ai.request.model\" AS model | sort - value | table model value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", model=\"\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_heatmap": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS v WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" span=1h BY \"user.email\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval daykey=strftime(_time,\"%Y%m%d\"), d=strftime(_time,\"%a %m/%d\"), h=tonumber(strftime(_time,\"%H\")) | stats sum(v) AS v by daykey d h | sort daykey h | fields d h v | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", d=\"\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_harness": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"service.name\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(tokens) AS value by \"service.name\" | eval s0='service.name' | eval harness=`harness_label(s0)` | sort - value | table harness value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", harness=\"\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        }
+    },
+    "layout": {
+        "type": "absolute",
+        "options": {
+            "display": "auto-scale",
+            "width": 1480,
+            "height": 1230,
+            "backgroundColor": "$theme$",
+            "showTitleAndDescription": false
+        },
+        "globalInputs": [
+            "input_time",
+            "input_user",
+            "input_service",
+            "input_theme"
+        ],
+        "structure": [
+            {
+                "item": "viz_users",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_tokens",
+                "type": "block",
+                "position": {
+                    "x": 302,
+                    "y": 10,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_cost",
+                "type": "block",
+                "position": {
+                    "x": 594,
+                    "y": 10,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_loc",
+                "type": "block",
+                "position": {
+                    "x": 886,
+                    "y": 10,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_cache",
+                "type": "block",
+                "position": {
+                    "x": 1178,
+                    "y": 10,
+                    "w": 292,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_leaderboard",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 150,
+                    "w": 1010,
+                    "h": 820
+                }
+            },
+            {
+                "item": "viz_area",
+                "type": "block",
+                "position": {
+                    "x": 1030,
+                    "y": 150,
+                    "w": 440,
+                    "h": 200
+                }
+            },
+            {
+                "item": "viz_ratelimit",
+                "type": "block",
+                "position": {
+                    "x": 1030,
+                    "y": 360,
+                    "w": 215,
+                    "h": 160
+                }
+            },
+            {
+                "item": "viz_adoption",
+                "type": "block",
+                "position": {
+                    "x": 1255,
+                    "y": 360,
+                    "w": 215,
+                    "h": 160
+                }
+            },
+            {
+                "item": "viz_models",
+                "type": "block",
+                "position": {
+                    "x": 1030,
+                    "y": 530,
+                    "w": 440,
+                    "h": 440
+                }
+            },
+            {
+                "item": "viz_heatmap",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 980,
+                    "w": 1010,
+                    "h": 240
+                }
+            },
+            {
+                "item": "viz_harness",
+                "type": "block",
+                "position": {
+                    "x": 1030,
+                    "y": 980,
+                    "w": 440,
+                    "h": 240
+                }
+            }
+        ]
+    },
+    "applicationProperties": {}
+}]]></definition>
+</dashboard>

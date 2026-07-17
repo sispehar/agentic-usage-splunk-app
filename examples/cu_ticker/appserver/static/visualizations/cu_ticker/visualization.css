@@ -1,0 +1,3 @@
+/* Agentic Usage — Live Ticker (Canvas viz; panel is drawn on the canvas itself) */
+.cu-ticker-viz { width: 100%; height: 100%; background: transparent; }
+.cu-ticker-viz canvas { display: block; }

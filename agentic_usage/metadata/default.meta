@@ -1,0 +1,68 @@
+[]
+access = read : [ * ], write : [ admin, sc_admin ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[visualizations/cu_kpi]
+export = system
+
+[visualizations/cu_leaderboard]
+export = system
+
+[visualizations/cu_stat]
+export = system
+
+[visualizations/cu_area]
+export = system
+
+[visualizations/cu_donut]
+export = system
+
+[visualizations/cu_heatmap]
+export = system
+
+[visualizations/cu_feed]
+export = system
+
+[visualizations/cu_bars]
+export = system
+
+[visualizations/cu_sessions]
+export = system
+
+[visualizations/cu_ticker]
+export = system

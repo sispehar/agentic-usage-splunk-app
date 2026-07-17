@@ -1,0 +1,11 @@
+display.visualizations.custom.cu_feed.cu_feed.title = <string>
+display.visualizations.custom.cu_feed.cu_feed.subtitle = <string>
+display.visualizations.custom.cu_feed.cu_feed.timeField = <string>
+display.visualizations.custom.cu_feed.cu_feed.userField = <string>
+display.visualizations.custom.cu_feed.cu_feed.projectField = <string>
+display.visualizations.custom.cu_feed.cu_feed.textField = <string>
+display.visualizations.custom.cu_feed.cu_feed.badgeField = <string>
+display.visualizations.custom.cu_feed.cu_feed.detailField = <string>
+display.visualizations.custom.cu_feed.cu_feed.accentColor = <string>
+display.visualizations.custom.cu_feed.cu_feed.maxRows = <integer>
+display.visualizations.custom.cu_feed.cu_feed.theme = <string>

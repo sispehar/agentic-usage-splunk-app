@@ -1,0 +1,37 @@
+{
+  "label": "Agentic Usage — Session Board",
+  "defaultSize": { "width": 1460, "height": 560 },
+  "noDataMessage": "No active sessions",
+  "dependencies": [],
+  "fields": [
+    { "name": "_numRows", "label": "Number of Sessions", "type": "slider", "min": 1, "max": 10, "step": 1, "default": 8 }
+  ],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "Active Sessions" },
+    { "name": "subtitle", "label": "Subtitle", "type": "text", "default": "live · 30m window" },
+    { "name": "activeThresholdSec", "label": "Active Threshold (s)", "type": "text", "default": "120" },
+    { "name": "ctxWarnPct", "label": "Ctx Warn %", "type": "text", "default": "60" },
+    { "name": "ctxHighPct", "label": "Ctx High %", "type": "text", "default": "85" },
+    { "name": "accentColor", "label": "Accent", "type": "color", "default": "#28b6a4" },
+    { "name": "maxRows", "label": "Max Rows", "type": "text", "default": "50" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["session.id", "user", "service", "term", "model", "started", "last_seen", "cost", "tokens", "prompts", "tools", "errors", "subagents", "compactions", "ctx_tokens", "ctx_pct", "last_tool"],
+    "relativeTimeColumn": ["started", "last_seen"],
+    "rowCountField": "_numRows",
+    "sampleRows": [
+      ["db25a752-3e3b-4643-a3b2-04ad6fda4684", "simon.spehar", "claude-code", "WarpTerminal", "fable-5", "15500", "12", "150.75", "122114366", "4", "645", "0", "5", "0", "588452", "58.8", "Bash"],
+      ["41afd683-3533-4819-8667-4b1644ec270d", "jakob.gazic", "claude-code", "Apple_Terminal", "fable-5", "17600", "40", "174.99", "58005906", "5", "762", "5", "8", "0", "274010", "27.4", "Read"],
+      ["ae0d9e14-8b8e-4352-8c2a-281222caa465", "tilen.mlakar", "claude-code", "vscode", "opus-4-8", "19300", "95", "92.10", "123173540", "33", "469", "0", "10", "1", "840317", "84.0", "Bash"],
+      ["425a4e46-0fa2-4146-928a-1cac0df518a1", "robert.silar", "claude-code", "ssh-session", "opus-4-8", "6900", "210", "63.78", "102894153", "8", "184", "0", "1", "0", "803713", "80.4", "TodoWrite"],
+      ["a046bc2e-5b19-4397-b556-23136cd1554a", "zan.gregorc", "claude-code", "non-interactive", "opus-4-8", "22800", "330", "13.77", "13272182", "22", "84", "0", "0", "0", "300654", "30.1", "AskUserQuestion"],
+      ["a1cec44f-8526-4ef1-8976-2a84f8abd646", "ratko.perlic", "claude-code", "pycharm", "fable-5", "10400", "510", "142.46", "44624856", "4", "782", "3", "69", "0", "260247", "26.0", "Read"],
+      ["6cab03f7-65ad-40ab-9ceb-ec16ffd89689", "tine.sparemblek", "cowork", "non-interactive", "", "240", "780", "0.55", "880291", "4", "16", "0", "0", "0", "", "0", "Bash"],
+      ["ece74b32-2407-4bea-bb97-be55004d4f82", "denis.urek", "claude-code", "tmux", "sonnet-4-6", "5200", "1394", "0.14", "117955", "5", "4", "0", "0", "0", "20602", "2.1", "mcp_tool"],
+      ["5936d3b9-d3c9-4e2a-8728-b4cf0bb42fad", "marko.berend", "claude-code", "pycharm", "opus-4-8", "1330", "1290", "3.62", "597900", "1", "0", "0", "0", "0", "597328", "59.7", ""],
+      ["e15252b8-53fd-46f2-954d-054de0ffc9fb", "ratko.perlic", "claude-code-desktop", "non-interactive", "fable-5[1m]", "22900", "1700", "239.55", "156846505", "22", "213", "0", "0", "2", "912400", "91.2", "mcp_tool"]
+    ]
+  }
+}

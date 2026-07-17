@@ -1,0 +1,41 @@
+<form class="splunk-formatter-section" section-label="Feed">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Activity Feed"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Subtitle" help="Small uppercase caption next to the title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.subtitle" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Accent Colour" help="Colour of the project name (hex)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.accentColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Fields">
+    <splunk-control-group label="Time Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.timeField" value="Time"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="User Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.userField" value="User"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Project Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.projectField" value="Project"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Text Field" help="Main text per row (e.g. the command)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.textField" value="Command"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Badge Field" help="Optional status column (e.g. OK / FORCE / FAILED); leave blank for no badge">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.badgeField" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Detail Field" help="Optional column with click-to-open details; '||'-separated 'Label: value' segments. Rows with a value show an ⓘ icon.">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.detailField" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Display">
+    <splunk-control-group label="Max Rows" help="Maximum number of rows to render">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.maxRows" value="100"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

@@ -1,0 +1,32 @@
+<form class="splunk-formatter-section" section-label="Donut">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="AI Models Used"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Sub-label" help="Right-aligned caption (e.g. token share)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.sublabel" value="token share"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Colours" help="Comma-separated hex, one per slice in order">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.colors" value="#f2643d,#28b6a4,#e6b24a,#3aa6c2,#52b487,#b9c4d0"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Tooltip Value">
+    <splunk-control-group label="Value Divisor" help="Divide raw value for the tooltip (e.g. 1000000000 for tokens→B)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueDivisor" value="1"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Unit" help="Suffix in the tooltip (e.g. B)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueUnit" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Field Mapping">
+    <splunk-control-group label="Label Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.labelField" value="model"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueField" value="value"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

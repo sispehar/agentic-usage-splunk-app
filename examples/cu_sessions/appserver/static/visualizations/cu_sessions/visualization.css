@@ -1,0 +1,95 @@
+/* ── Agentic Usage design tokens (Terminal treatment) ── */
+.agentic-usage {
+  --bg: #0a0c10; --panel: #14181f; --panel-2: #1a1f28;
+  --line: rgba(255,255,255,.07); --line-2: rgba(255,255,255,.12);
+  --txt: #e9eef4; --txt-mid: #98a3b0; --txt-low: #5d6773;
+  --coral: #f2643d; --teal: #28b6a4; --cyan: #3aa6c2; --green: #52b487;
+  --gold: #e6b24a; --silver: #b9c4d0; --bronze: #cd8a55; --red: #e0584c;
+  --sans: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --display: 'JetBrains Mono', ui-monospace, monospace;
+  width: 100%; height: 100%;
+  font-family: var(--sans); color: var(--txt);
+  -webkit-font-smoothing: antialiased; box-sizing: border-box;
+}
+.agentic-usage * { box-sizing: border-box; }
+
+/* Light-theme neutrals (mirrors shared/agentic_usage_theme.css so the viz
+   also themes correctly standalone, e.g. in the local test harness). */
+.agentic-usage[data-theme="light"] {
+  --bg: #f4f6f8; --panel: #ffffff; --panel-2: #eef1f5;
+  --line: rgba(15,23,32,.08); --line-2: rgba(15,23,32,.14);
+  --txt: #1a1d24; --txt-mid: #566270; --txt-low: #8a95a3;
+  --silver: #7f8a98; --gold: #c8902e; --teal: #1f9e8e;
+}
+
+.cu-sess-root {
+  position: relative; width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 16px; font-family: var(--sans); color: var(--txt); overflow: hidden;
+}
+
+.cu-sess-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex: 0 0 auto; }
+.cu-sess-title { font-size: 14px; font-weight: 600; color: var(--txt); }
+.cu-sess-sub { font-family: var(--mono); text-transform: uppercase; letter-spacing: .12em; font-size: 10.5px; color: var(--txt-low); }
+.cu-sess-count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--txt-mid); background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 10px; padding: 1px 8px; }
+.agentic-usage[data-theme="light"] .cu-sess-count { background: rgba(15,23,32,.04); }
+
+.cu-sess-cols, .cu-sess-row {
+  display: grid;
+  grid-template-columns: 16px minmax(110px,1.1fr) 104px 96px 60px minmax(150px,1.5fr) 72px 50px 54px 44px 96px;
+  gap: 10px; align-items: center;
+}
+.cu-sess-cols { flex: 0 0 auto; padding: 0 0 6px; border-bottom: 1px solid var(--line-2); }
+.cu-sess-cols span { font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: .1em; color: var(--txt-low); white-space: nowrap; overflow: hidden; }
+.cu-sess-cols span:nth-child(7), .cu-sess-cols span:nth-child(8), .cu-sess-cols span:nth-child(9) { text-align: right; }
+.cu-sess-cols span:nth-child(10) { text-align: center; }
+
+.cu-sess-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; margin: 0 -16px; padding: 0 16px; }
+.cu-sess-list::-webkit-scrollbar { width: 8px; }
+.cu-sess-list::-webkit-scrollbar-track { background: transparent; }
+.cu-sess-list::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+
+.cu-sess-row { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.cu-sess-row:last-child { border-bottom: 0; }
+.cu-sess-row > span { min-width: 0; white-space: nowrap; }
+
+.cu-sess-dotcell { display: flex; align-items: center; justify-content: center; }
+.cu-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--txt-low); flex: 0 0 auto; }
+.cu-dot.live { background: var(--teal); animation: cuSessPulse 1.8s ease-in-out infinite; }
+.cu-dot.idle { background: var(--txt-low); opacity: .55; }
+@keyframes cuSessPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(40,182,164,.5); }
+  70% { box-shadow: 0 0 0 6px rgba(40,182,164,0); }
+}
+
+.cu-sess-user { display: flex; align-items: baseline; overflow: hidden; }
+.cu-sess-user .cu-u { font-family: var(--mono); font-size: 12px; color: var(--txt); overflow: hidden; text-overflow: ellipsis; }
+.cu-idle { font-family: var(--mono); font-size: 10px; color: var(--txt-low); margin-left: 8px; flex: 0 0 auto; }
+
+.cu-sess-modelcell { overflow: hidden; }
+.cu-chip { display: inline-block; max-width: 100%; font-family: var(--mono); font-size: 10.5px; color: var(--txt-mid); border: 1px solid var(--line-2); border-radius: 4px; padding: 1px 7px; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+.cu-chip.dim { color: var(--txt-low); border-style: dashed; }
+
+.cu-sess-term { font-family: var(--mono); font-size: 11px; color: var(--txt-mid); overflow: hidden; text-overflow: ellipsis; }
+.cu-sess-dur { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--txt-mid); }
+
+.cu-sess-ctx { display: flex; align-items: center; gap: 8px; }
+.cu-ctx-bar { flex: 1 1 auto; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.cu-ctx-fill { display: block; height: 100%; border-radius: 3px; width: 0; background: var(--teal); transition: width .8s cubic-bezier(.4,0,.2,1), background-color .4s ease; }
+.cu-ctx-fill.c-warn { background: var(--gold); }
+.cu-ctx-fill.c-high { background: var(--coral); }
+.cu-ctx-pct { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11px; color: var(--txt-mid); width: 38px; text-align: right; flex: 0 0 auto; }
+
+.cu-sess-cost { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--txt); text-align: right; }
+.cu-sess-num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--txt-mid); text-align: right; }
+
+.cu-sess-errcell { display: flex; justify-content: center; }
+.cu-sess-err { font-family: var(--mono); font-size: 10px; color: var(--txt-low); }
+.cu-sess-err.on { font-weight: 600; color: var(--coral); background: rgba(242,100,61,.16); border-radius: 4px; padding: 1px 7px; }
+
+.cu-sess-last { font-family: var(--mono); font-size: 11px; color: var(--txt-low); overflow: hidden; text-overflow: ellipsis; }
+
+.cu-sess-empty { font-family: var(--mono); font-size: 12px; color: var(--txt-low); text-align: center; padding: 30px 0; }
+.cu-status { display: flex; align-items: center; justify-content: center; height: 100%; font-family: var(--mono); font-size: 12px; color: var(--txt-mid); text-align: center; }

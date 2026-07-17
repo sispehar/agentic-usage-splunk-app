@@ -1,0 +1,29 @@
+{
+  "label": "Agentic Usage — Heatmap",
+  "defaultSize": { "width": 760, "height": 260 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "Activity Heatmap" },
+    { "name": "subtitle", "label": "Subtitle", "type": "text", "default": "tokens by date & hour" },
+    { "name": "lowColor", "label": "Low (cool)", "type": "color", "default": "#28b6a4" },
+    { "name": "highColor", "label": "High (hot)", "type": "color", "default": "#f2643d" },
+    { "name": "valueDivisor", "label": "Value Divisor", "type": "text", "default": "1" },
+    { "name": "valueUnit", "label": "Value Unit", "type": "text", "default": "" },
+    { "name": "valueNoun", "label": "Value Noun", "type": "text", "default": "tokens" },
+    { "name": "dayField", "label": "Day Field", "type": "text", "default": "d" },
+    { "name": "hourField", "label": "Hour Field", "type": "text", "default": "h" },
+    { "name": "valueField", "label": "Value Field", "type": "text", "default": "v" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["d", "h", "v"],
+    "sampleRows": [
+      ["Mon 06/01", "9", "40"], ["Mon 06/01", "11", "180"], ["Mon 06/01", "13", "150"], ["Mon 06/01", "15", "60"], ["Mon 06/01", "17", "30"],
+      ["Tue 06/02", "9", "35"], ["Tue 06/02", "11", "90"], ["Tue 06/02", "13", "210"], ["Tue 06/02", "15", "70"], ["Tue 06/02", "17", "25"],
+      ["Wed 06/03", "9", "50"], ["Wed 06/03", "11", "120"], ["Wed 06/03", "13", "95"], ["Wed 06/03", "15", "55"], ["Wed 06/03", "17", "40"]
+    ]
+  }
+}

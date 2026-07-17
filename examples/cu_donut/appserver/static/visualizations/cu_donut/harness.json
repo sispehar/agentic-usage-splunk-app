@@ -1,0 +1,26 @@
+{
+  "label": "Agentic Usage — Donut",
+  "defaultSize": { "width": 440, "height": 240 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "AI Models Used" },
+    { "name": "sublabel", "label": "Sub-label", "type": "text", "default": "token share" },
+    { "name": "colors", "label": "Colours", "type": "text", "default": "#f2643d,#28b6a4,#e6b24a,#3aa6c2,#52b487,#b9c4d0" },
+    { "name": "valueDivisor", "label": "Value Divisor", "type": "text", "default": "1" },
+    { "name": "valueUnit", "label": "Value Unit", "type": "text", "default": "B" },
+    { "name": "labelField", "label": "Label Field", "type": "text", "default": "model" },
+    { "name": "valueField", "label": "Value Field", "type": "text", "default": "value" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["model", "value"],
+    "sampleRows": [
+      ["Sonnet 4.7", "3.47"],
+      ["Opus 4.8", "1.74"],
+      ["Haiku 4.5", "0.39"]
+    ]
+  }
+}

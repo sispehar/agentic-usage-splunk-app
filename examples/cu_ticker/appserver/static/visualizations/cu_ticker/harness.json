@@ -1,0 +1,43 @@
+{
+  "label": "Agentic Usage — Live Ticker",
+  "defaultSize": { "width": 1460, "height": 56 },
+  "noDataMessage": "Awaiting live activity",
+  "dependencies": [],
+  "fields": [
+    { "name": "_numRows", "label": "Number of Entries", "type": "slider", "min": 1, "max": 16, "step": 1, "default": 12 }
+  ],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "SESSIONS" },
+    { "name": "scrollSpeed", "label": "Scroll Speed", "type": "radio", "options": ["slow", "medium", "fast"], "default": "medium" },
+    { "name": "maxItems", "label": "Max Items", "type": "text", "default": "30" },
+    { "name": "kindField", "label": "Kind Field", "type": "text", "default": "kind" },
+    { "name": "textField", "label": "Text Field", "type": "text", "default": "text" },
+    { "name": "accentColor", "label": "Accent", "type": "color", "default": "#28b6a4" },
+    { "name": "liveColor", "label": "Live Badge", "type": "color", "default": "#f2643d" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["_time", "kind", "user", "text"],
+    "relativeTimeColumn": "_time",
+    "rowCountField": "_numRows",
+    "sampleRows": [
+      ["25", "PROMPT", "simon.spehar", "simon.spehar sent a prompt"],
+      ["70", "START", "marko.berend", "marko.berend started a session"],
+      ["140", "PROMPT", "tilen.mlakar", "tilen.mlakar sent a prompt"],
+      ["210", "COMPACT", "jakob.gazic", "jakob.gazic compacted context"],
+      ["300", "ERROR", "denis.urek", "denis.urek hit rate_limit_error"],
+      ["380", "PROMPT", "ratko.perlic", "ratko.perlic sent a prompt"],
+      ["460", "START", "zan.gregorc", "zan.gregorc started a session"],
+      ["540", "PROMPT", "robert.silar", "robert.silar sent a prompt"],
+      ["650", "PROMPT", "jakob.gazic", "jakob.gazic sent a prompt"],
+      ["760", "ERROR", "tilen.mlakar", "tilen.mlakar exhausted API retries"],
+      ["880", "COMPACT", "robert.silar", "robert.silar compacted context"],
+      ["990", "PROMPT", "simon.spehar", "simon.spehar sent a prompt"],
+      ["1130", "START", "denis.urek", "denis.urek started a session"],
+      ["1260", "PROMPT", "marko.berend", "marko.berend sent a prompt"],
+      ["1400", "PROMPT", "zan.gregorc", "zan.gregorc sent a prompt"],
+      ["1550", "START", "jakob.gazic", "jakob.gazic started a session"]
+    ]
+  }
+}

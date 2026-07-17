@@ -1,0 +1,21 @@
+/* ── Agentic Usage — light-theme overrides ──
+   Prepended to every cu_* viz CSS by build.sh. The base palette lives on
+   `.agentic-usage` (dark by design); these `[data-theme="light"]` rules win by
+   higher specificity, so prepend order does not matter. A viz flips to light by
+   setting `data-theme="light"` on its root element (driven by the `theme`
+   formatter option / dashboard `$theme$` token). Accent/data colours are kept;
+   only neutrals + true white-on-white decorations are remapped. */
+.agentic-usage[data-theme="light"] {
+  --bg: #f4f6f8; --panel: #ffffff; --panel-2: #eef1f5;
+  --line: rgba(15,23,32,.08); --line-2: rgba(15,23,32,.14);
+  --txt: #1a1d24; --txt-mid: #566270; --txt-low: #8a95a3;
+  --silver: #7f8a98; --gold: #c8902e; --teal: #1f9e8e;
+}
+
+/* white-on-white text + white HUD decorations → theme colours (light only) */
+.agentic-usage[data-theme="light"] .cu-kpi-root[data-hero="1"] .cu-kpi-value { color: var(--txt); }
+.agentic-usage[data-theme="light"] .cu-corner { border-color: rgba(15,23,32,.22); }
+.agentic-usage[data-theme="light"] .cu-podium-name { color: var(--txt); }
+.agentic-usage[data-theme="light"] .cu-lb-row:hover { background: rgba(15,23,32,.045); }
+.agentic-usage[data-theme="light"] .cu-bar { background: rgba(15,23,32,.08); }
+.agentic-usage[data-theme="light"] .cu-stat-bar { background: rgba(15,23,32,.08); }

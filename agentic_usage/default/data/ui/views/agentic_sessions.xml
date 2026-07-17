@@ -1,0 +1,456 @@
+<dashboard version="2" theme="dark">
+    <label>Sessions</label>
+    <description>Live agent sessions — activity board, burn rate, events</description>
+    <definition><![CDATA[{
+    "title": "Agentic Usage · Sessions",
+    "description": "",
+    "inputs": {
+        "input_time": {
+            "options": {
+                "defaultValue": "-7d@h,now",
+                "token": "tr"
+            },
+            "title": "Time Range",
+            "type": "input.timerange"
+        },
+        "input_user": {
+            "dataSources": {
+                "primary": "ds_userlist"
+            },
+            "options": {
+                "defaultValue": "All",
+                "items": [
+                    {
+                        "label": "All Users",
+                        "value": "All"
+                    }
+                ],
+                "token": "selected_user"
+            },
+            "title": "User",
+            "type": "input.dropdown"
+        },
+        "input_service": {
+            "options": {
+                "defaultValue": "All",
+                "items": [
+                    {
+                        "label": "All Harnesses",
+                        "value": "All"
+                    },
+                    {
+                        "label": "Claude Code",
+                        "value": "claude-code"
+                    },
+                    {
+                        "label": "Claude Desktop",
+                        "value": "claude-code-desktop"
+                    },
+                    {
+                        "label": "Cowork",
+                        "value": "cowork"
+                    },
+                    {
+                        "label": "Gemini CLI",
+                        "value": "gemini-cli"
+                    },
+                    {
+                        "label": "Codex",
+                        "value": "codex"
+                    }
+                ],
+                "token": "selected_service"
+            },
+            "title": "Harness",
+            "type": "input.dropdown"
+        },
+        "input_theme": {
+            "options": {
+                "defaultValue": "#0a0c10",
+                "items": [
+                    {
+                        "label": "Dark",
+                        "value": "#0a0c10"
+                    },
+                    {
+                        "label": "Light",
+                        "value": "#f4f6f8"
+                    }
+                ],
+                "token": "theme"
+            },
+            "title": "Theme",
+            "type": "input.dropdown"
+        }
+    },
+    "defaults": {
+        "dataSources": {}
+    },
+    "visualizations": {
+        "viz_sess_ticker": {
+            "type": "agentic_usage.cu_ticker",
+            "options": {
+                "agentic_usage.cu_ticker.theme": "$theme$",
+                "agentic_usage.cu_ticker.title": "SESSIONS",
+                "agentic_usage.cu_ticker.kindField": "kind",
+                "agentic_usage.cu_ticker.textField": "text",
+                "agentic_usage.cu_ticker.scrollSpeed": "medium",
+                "agentic_usage.cu_ticker.maxItems": "30",
+                "agentic_usage.cu_ticker.accentColor": "#28b6a4",
+                "agentic_usage.cu_ticker.liveColor": "#f2643d"
+            },
+            "dataSources": {
+                "primary": "ds_sess_ticker"
+            }
+        },
+        "viz_sess_active": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "ACTIVE SESSIONS",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "true",
+                "agentic_usage.cu_kpi.accentColor": "#28b6a4"
+            },
+            "dataSources": {
+                "primary": "ds_sess_kpi_active"
+            }
+        },
+        "viz_sess_users": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "ACTIVE USERS",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#3aa6c2"
+            },
+            "dataSources": {
+                "primary": "ds_sess_kpi_users"
+            }
+        },
+        "viz_sess_today": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "SESSIONS TODAY",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#e6b24a"
+            },
+            "dataSources": {
+                "primary": "ds_sess_kpi_today"
+            }
+        },
+        "viz_sess_avglen": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "AVG SESSION LENGTH",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#52b487"
+            },
+            "dataSources": {
+                "primary": "ds_sess_kpi_avglen"
+            }
+        },
+        "viz_sess_burn": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "LIVE BURN RATE",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.unit": "/hr",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#f2643d"
+            },
+            "dataSources": {
+                "primary": "ds_sess_kpi_burn"
+            }
+        },
+        "viz_sess_board": {
+            "type": "agentic_usage.cu_sessions",
+            "options": {
+                "agentic_usage.cu_sessions.theme": "$theme$",
+                "agentic_usage.cu_sessions.title": "Active Sessions",
+                "agentic_usage.cu_sessions.subtitle": "live · 30m window",
+                "agentic_usage.cu_sessions.activeThresholdSec": "120",
+                "agentic_usage.cu_sessions.ctxWarnPct": "60",
+                "agentic_usage.cu_sessions.ctxHighPct": "85",
+                "agentic_usage.cu_sessions.accentColor": "#28b6a4",
+                "agentic_usage.cu_sessions.maxRows": "50"
+            },
+            "dataSources": {
+                "primary": "ds_sess_board"
+            }
+        },
+        "viz_sess_top": {
+            "type": "agentic_usage.cu_bars",
+            "options": {
+                "agentic_usage.cu_bars.theme": "$theme$",
+                "agentic_usage.cu_bars.title": "Top Sessions Today",
+                "agentic_usage.cu_bars.subtitle": "by tokens",
+                "agentic_usage.cu_bars.labelField": "Session",
+                "agentic_usage.cu_bars.valueField": "Tokens (M)",
+                "agentic_usage.cu_bars.valueUnit": "M",
+                "agentic_usage.cu_bars.secondaryField": "Detail",
+                "agentic_usage.cu_bars.secondarySuffix": "",
+                "agentic_usage.cu_bars.barColor": "#28b6a4",
+                "agentic_usage.cu_bars.maxRows": "0"
+            },
+            "dataSources": {
+                "primary": "ds_sess_top"
+            }
+        },
+        "viz_sess_feed": {
+            "type": "agentic_usage.cu_feed",
+            "options": {
+                "agentic_usage.cu_feed.theme": "$theme$",
+                "agentic_usage.cu_feed.title": "Session Events",
+                "agentic_usage.cu_feed.subtitle": "errors · compactions · agents",
+                "agentic_usage.cu_feed.timeField": "Time",
+                "agentic_usage.cu_feed.userField": "User",
+                "agentic_usage.cu_feed.projectField": "Session",
+                "agentic_usage.cu_feed.textField": "Event",
+                "agentic_usage.cu_feed.badgeField": "Badge",
+                "agentic_usage.cu_feed.detailField": "Detail",
+                "agentic_usage.cu_feed.accentColor": "#28b6a4",
+                "agentic_usage.cu_feed.maxRows": "100"
+            },
+            "dataSources": {
+                "primary": "ds_sess_feed"
+            }
+        }
+    },
+    "dataSources": {
+        "ds_userlist": {
+            "type": "ds.search",
+            "options": {
+                "query": "| mstats count WHERE `agentic_metrics` metric_name=\"gen_ai.client.token.usage\" BY \"user.email\" \"service.name\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats count by \"user.email\" | rename \"user.email\" AS value | eval label=value | sort label | fields label value",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_sess_ticker": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name IN (user_prompt, api_error, api_retries_exhausted, compaction) | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | eval user=mvindex(split(coalesce('user.email','user.id'),\"@\"),0) | eval user=if(match(user,\"^[0-9a-f][0-9a-f-]{15,}$\"), substr(user,1,8).\"…\", user) | eval kind=case('event.name'==\"user_prompt\",\"PROMPT\",'event.name'==\"compaction\",\"COMPACT\",1=1,\"ERROR\") | eval text=case('event.name'==\"user_prompt\", user.\" sent a prompt\", 'event.name'==\"compaction\", user.\" compacted context (\".coalesce(trigger,\"auto\").\")\", 'event.name'==\"api_error\", user.\" hit \".substr(coalesce(error,\"an API error\"),1,60), 1=1, user.\" exhausted API retries\") | append [| mstats sum(_value) AS n WHERE `agentic_metrics` metric_name=\"agentic.session.count\" span=1m BY \"user.email\" \"service.name\" | where n>0 | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval user=mvindex(split('user.email',\"@\"),0), kind=\"START\", text=user.\" started a session\"] | sort - _time | head 40 | table _time kind user text | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting live activity\", kind=\"\"]",
+                "queryParameters": {
+                    "earliest": "-60m",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_kpi_active": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name IN (api_request, user_prompt, tool_result) | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | stats dc(\"gen_ai.conversation.id\") AS value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "-30m",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_kpi_users": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name IN (api_request, user_prompt, tool_result) | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | eval u=coalesce('user.email','user.id') | stats dc(u) AS value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "-30m",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_kpi_today": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=api_request | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | stats dc(\"gen_ai.conversation.id\") AS value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "queryParameters": {
+                    "earliest": "@d",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_kpi_avglen": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=api_request | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | stats min(_time) AS st max(_time) AS en BY \"gen_ai.conversation.id\" | where en>st | stats avg(eval(en-st)) AS avg_s | eval m=round(avg_s/60) | eval value=if(m>=60, floor(m/60).\"h \".(m%60).\"m\", m.\"m\") | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"0m\"]",
+                "queryParameters": {
+                    "earliest": "@d",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_kpi_burn": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=api_request | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | stats sum(\"agentic.cost.usd\") AS c | eval value=\"$\".tostring(round(coalesce(c,0)*4,2)) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"$0\"]",
+                "queryParameters": {
+                    "earliest": "-15m",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_board": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name IN (api_request, user_prompt, tool_result, api_error, subagent_completed, compaction) | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | eval u=coalesce('user.email','user.id') | stats min(_time) AS started, max(_time) AS last_seen, latest(u) AS user, latest(\"service.name\") AS service, latest(\"terminal.type\") AS term, sum(eval(if('event.name'==\"api_request\", coalesce('agentic.cost.usd',0), 0))) AS cost, sum(eval(if('event.name'==\"api_request\", coalesce('gen_ai.usage.input_tokens',0)+coalesce('gen_ai.usage.output_tokens',0)+coalesce('gen_ai.usage.cache_read.input_tokens',0)+coalesce('gen_ai.usage.cache_creation.input_tokens',0), 0))) AS tokens, count(eval('event.name'==\"user_prompt\")) AS prompts, count(eval('event.name'==\"tool_result\")) AS tools, count(eval('event.name'==\"api_error\")) AS errors, count(eval('event.name'==\"subagent_completed\")) AS subagents, count(eval('event.name'==\"compaction\")) AS compactions, latest(eval(if('event.name'==\"api_request\" AND query_source==\"repl_main_thread\", coalesce('gen_ai.usage.cache_read.input_tokens',0)+coalesce('gen_ai.usage.cache_creation.input_tokens',0)+coalesce('gen_ai.usage.input_tokens',0), null()))) AS ctx_main, latest(eval(if('event.name'==\"api_request\" AND (isnull(query_source) OR NOT like(query_source,\"agent%\")), coalesce('gen_ai.usage.cache_read.input_tokens',0)+coalesce('gen_ai.usage.cache_creation.input_tokens',0)+coalesce('gen_ai.usage.input_tokens',0), null()))) AS ctx_any, latest(eval(if('event.name'==\"api_request\" AND query_source==\"repl_main_thread\", 'gen_ai.request.model', null()))) AS model_main, latest(eval(if('event.name'==\"api_request\" AND (isnull(query_source) OR NOT like(query_source,\"agent%\")), 'gen_ai.request.model', null()))) AS model_any, latest(eval(if('event.name'==\"tool_result\", 'gen_ai.tool.name', null()))) AS last_tool BY \"gen_ai.conversation.id\" | where last_seen >= relative_time(now(), \"-30m\") AND (tokens>0 OR prompts>0) | eval model=coalesce(model_main, model_any, \"unknown\"), ctx_tokens=coalesce(ctx_main, ctx_any) | lookup agentic_model_context model_pattern AS model OUTPUT context_window | eval ctx_window=coalesce(context_window, 200000) | eval model=replace(model, \"^claude-\", \"\") | eval ctx_pct=if(isnotnull(ctx_tokens), min(round(ctx_tokens/ctx_window*100,1), 100), 0) | eval user=mvindex(split(user,\"@\"),0) | eval user=if(match(user,\"^[0-9a-f][0-9a-f-]{15,}$\"), substr(user,1,8).\"…\", user) | rename \"gen_ai.conversation.id\" AS \"session.id\" | sort - last_seen | table session.id user service term model started last_seen cost tokens prompts tools errors subagents compactions ctx_tokens ctx_pct last_tool | appendpipe [| stats count | where count=0 | eval _status=\"No active sessions\", user=\"\"]",
+                "queryParameters": {
+                    "earliest": "-24h@m",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_top": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=api_request | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | eval u=mvindex(split(coalesce('user.email','user.id'),\"@\"),0) | eval u=if(match(u,\"^[0-9a-f][0-9a-f-]{15,}$\"), substr(u,1,8).\"…\", u) | stats min(_time) AS st, max(_time) AS en, latest(u) AS user, sum(eval(coalesce('gen_ai.usage.input_tokens',0)+coalesce('gen_ai.usage.output_tokens',0)+coalesce('gen_ai.usage.cache_read.input_tokens',0)+coalesce('gen_ai.usage.cache_creation.input_tokens',0))) AS tokens, sum(\"agentic.cost.usd\") AS cost BY \"gen_ai.conversation.id\" | where tokens>0 | sort - tokens | head 12 | eval mins=round((en-st)/60), dur=if(mins>=60, floor(mins/60).\"h \".(mins%60).\"m\", mins.\"m\") | eval Session=user.\" · \".substr('gen_ai.conversation.id',1,8) | eval TokensM=round(tokens/1000000,1) | eval Detail=dur.\" · $\".tostring(round(coalesce(cost,0),2)) | rename TokensM AS \"Tokens (M)\" | table Session \"Tokens (M)\" Detail | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", Session=\"\"]",
+                "queryParameters": {
+                    "earliest": "@d",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_sess_feed": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name IN (compaction, api_error, api_retries_exhausted, permission_mode_changed, subagent_completed) | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where \"$selected_user$\"==\"All\" OR 'user.email'==\"$selected_user$\" | eval User=mvindex(split(coalesce('user.email','user.id'),\"@\"),0) | eval User=if(match(User,\"^[0-9a-f][0-9a-f-]{15,}$\"), substr(User,1,8).\"…\", User) | eval Time=strftime(_time,\"%H:%M:%S\") | eval Session=substr('gen_ai.conversation.id',1,8) | eval Badge=case('event.name'==\"api_error\",\"ERROR\",'event.name'==\"api_retries_exhausted\",\"FAILED\",'event.name'==\"compaction\",\"COMPACT\",'event.name'==\"permission_mode_changed\",\"MODE\",1=1,\"AGENT\") | eval Event=case('event.name'==\"api_error\", substr(coalesce(error,\"API error\"),1,120), 'event.name'==\"api_retries_exhausted\", \"API retries exhausted\", 'event.name'==\"compaction\", \"context compaction (\".coalesce(trigger,\"auto\").\")\", 'event.name'==\"permission_mode_changed\", \"mode \".coalesce(from_mode,\"?\").\" → \".coalesce(to_mode,\"?\"), 1=1, \"subagent \".coalesce('gen_ai.agent.name',\"agent\").\" done · \".coalesce(tostring(total_tool_uses),\"0\").\" tools\") | eval Detail=\"Session: \".coalesce('gen_ai.conversation.id',\"—\").\" || Model: \".coalesce('gen_ai.request.model',\"—\").\" || Error type: \".coalesce(error_type,\"—\").\" || Duration: \".coalesce(tostring(duration_ms),\"—\").\" ms\" | eval Detail=if(Badge IN (\"ERROR\",\"FAILED\"), Detail, \"\") | sort - _time | head 100 | table Time User Session Event Badge Detail | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", Time=\"\"]",
+                "queryParameters": {
+                    "earliest": "-4h",
+                    "latest": "now"
+                }
+            }
+        }
+    },
+    "layout": {
+        "type": "absolute",
+        "options": {
+            "display": "auto-scale",
+            "width": 1480,
+            "height": 1220,
+            "backgroundColor": "$theme$",
+            "showTitleAndDescription": false
+        },
+        "globalInputs": [
+            "input_time",
+            "input_user",
+            "input_service",
+            "input_theme"
+        ],
+        "structure": [
+            {
+                "item": "viz_sess_ticker",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "w": 1460,
+                    "h": 56
+                }
+            },
+            {
+                "item": "viz_sess_active",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 76,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_sess_users",
+                "type": "block",
+                "position": {
+                    "x": 302,
+                    "y": 76,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_sess_today",
+                "type": "block",
+                "position": {
+                    "x": 594,
+                    "y": 76,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_sess_avglen",
+                "type": "block",
+                "position": {
+                    "x": 886,
+                    "y": 76,
+                    "w": 282,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_sess_burn",
+                "type": "block",
+                "position": {
+                    "x": 1178,
+                    "y": 76,
+                    "w": 292,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_sess_board",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 216,
+                    "w": 1460,
+                    "h": 560
+                }
+            },
+            {
+                "item": "viz_sess_top",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 786,
+                    "w": 560,
+                    "h": 424
+                }
+            },
+            {
+                "item": "viz_sess_feed",
+                "type": "block",
+                "position": {
+                    "x": 580,
+                    "y": 786,
+                    "w": 890,
+                    "h": 424
+                }
+            }
+        ]
+    },
+    "applicationProperties": {}
+}]]></definition>
+</dashboard>

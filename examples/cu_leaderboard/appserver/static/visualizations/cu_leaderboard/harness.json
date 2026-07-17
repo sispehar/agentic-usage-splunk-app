@@ -1,0 +1,53 @@
+{
+  "label": "Agentic Usage — Leaderboard",
+  "defaultSize": { "width": 1010, "height": 600 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "Team Leaderboard" },
+    { "name": "showPodium", "label": "Show Podium", "type": "radio", "options": ["true", "false"], "default": "true" },
+    { "name": "rowsPerPage", "label": "Rows Per Page", "type": "text", "default": "8" },
+    { "name": "metricField", "label": "Metric Field", "type": "text", "default": "Tokens (M)" },
+    { "name": "metricColLabel", "label": "Metric Col Label", "type": "text", "default": "Tokens (M)" },
+    { "name": "metricLabel", "label": "Metric Label", "type": "text", "default": "tokens" },
+    { "name": "metricUnit", "label": "Metric Unit", "type": "text", "default": "M" },
+    { "name": "metricPrefix", "label": "Metric Prefix", "type": "text", "default": "" },
+    { "name": "nameField", "label": "Name Field", "type": "text", "default": "User" },
+    { "name": "serviceField", "label": "Service Field", "type": "text", "default": "Service" },
+    { "name": "costField", "label": "Cost Field", "type": "text", "default": "Cost ($)" },
+    { "name": "cacheField", "label": "Cache Field", "type": "text", "default": "Cache %" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["User", "Service", "Tokens (M)", "Cost ($)", "Cache %"],
+    "sampleRows": [
+      ["Tian Kljucanin", "Both", "1028.6", "612.40", "96.2"],
+      ["Tilen Pokrivac", "Claude Code", "812.7", "648.10", "96.5"],
+      ["Ratko Perlic", "Both", "787.5", "844.00", "96.9"],
+      ["Simon Spehar", "Claude Code", "567.7", "586.29", "92.1"],
+      ["Tilen Mlakar", "Claude Code", "539.8", "385.78", "98.0"],
+      ["Blaz Dolenc", "Claude Code", "407.9", "480.11", "97.8"],
+      ["Denis Urek", "Claude Code", "385.9", "327.41", "90.7"],
+      ["Jernej Dolinsek", "Claude Code", "372.2", "192.73", "97.8"],
+      ["Luka Modic", "Both", "308.7", "481.31", "93.4"],
+      ["Ana Kovac", "Claude Code", "264.2", "142.90", "95.1"],
+      ["Marko Novak", "Claude Code", "248.0", "233.10", "94.0"],
+      ["Eva Horvat", "Both", "231.5", "310.22", "95.8"],
+      ["Nejc Zupan", "Claude Code", "212.9", "121.40", "96.0"],
+      ["Maja Krajnc", "Cowork", "198.3", "175.60", "91.2"],
+      ["Zan Bizjak", "Claude Code", "181.7", "209.85", "97.1"],
+      ["Sara Golob", "Both", "167.4", "142.30", "93.9"],
+      ["Rok Vidmar", "Claude Code", "154.8", "98.20", "95.5"],
+      ["Nina Kos", "Cowork", "142.1", "167.75", "90.1"],
+      ["Matej Hribar", "Claude Code", "129.6", "88.40", "96.7"],
+      ["Petra Zajc", "Both", "118.3", "134.10", "94.4"],
+      ["Gregor Pirc", "Claude Code", "104.9", "72.60", "95.9"],
+      ["Lara Bele", "Cowork", "96.2", "110.30", "89.8"],
+      ["Domen Lah", "Claude Code", "84.5", "61.20", "97.3"],
+      ["Ula Mlinar", "Claude Code", "73.8", "95.40", "92.6"],
+      ["Bor Kralj", "Both", "61.2", "78.90", "93.1"]
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+<form class="splunk-formatter-section" section-label="Stat Panel">
+    <splunk-control-group label="Label">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.label" value="STAT"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Accent Colour" help="Colour of the big value (hex)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.accentColor" value="#f2643d"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Value">
+    <splunk-control-group label="Value Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.bigField" value="value"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Unit" help="Small unit attached to the value (e.g. %)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.unit" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Suffix" help="Muted text after the value (e.g. active devs)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.suffix" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Bar + Footnote (optional)">
+    <splunk-control-group label="Bar Field" help="Numeric 0–100 column; leave blank for no bar">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.barField" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Bar Colour">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.barColor" value="#f2643d"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Footnote Field" help="Text column shown under the bar/value">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.footnoteField" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Key/Value Rows (optional)">
+    <splunk-control-group label="Row 1 Label">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.kv1Label" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Row 1 Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.kv1Field" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Row 2 Label">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.kv2Label" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Row 2 Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.kv2Field" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

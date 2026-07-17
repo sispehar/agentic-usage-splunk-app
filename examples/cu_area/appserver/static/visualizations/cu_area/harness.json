@@ -1,0 +1,47 @@
+{
+  "label": "Agentic Usage — Area Chart",
+  "defaultSize": { "width": 400, "height": 200 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "Token Usage by Hour" },
+    { "name": "showLegend", "label": "Show Legend", "type": "radio", "options": ["true", "false"], "default": "true" },
+    { "name": "valueDivisor", "label": "Value Divisor", "type": "text", "default": "1" },
+    { "name": "valueUnit", "label": "Value Unit", "type": "text", "default": "" },
+    { "name": "readLabel", "label": "Series 1 Label", "type": "text", "default": "cacheRead" },
+    { "name": "createLabel", "label": "Series 2 Label", "type": "text", "default": "cacheCreation" },
+    { "name": "readColor", "label": "cacheRead", "type": "color", "default": "#28b6a4" },
+    { "name": "createColor", "label": "cacheCreation", "type": "color", "default": "#3aa6c2" },
+    { "name": "inputColor", "label": "input", "type": "color", "default": "#f2643d" },
+    { "name": "outputColor", "label": "output", "type": "color", "default": "#e6b24a" },
+    { "name": "timeField", "label": "Time Field", "type": "text", "default": "_time" },
+    { "name": "labelField", "label": "Hour Label Field", "type": "text", "default": "hourLabel" },
+    { "name": "tickLabelField", "label": "Tick Label Field", "type": "text", "default": "tickLabel" },
+    { "name": "readField", "label": "cacheRead Field", "type": "text", "default": "cacheRead" },
+    { "name": "createField", "label": "cacheCreation Field", "type": "text", "default": "cacheCreation" },
+    { "name": "inputField", "label": "input Field", "type": "text", "default": "input" },
+    { "name": "outputField", "label": "output Field", "type": "text", "default": "output" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["_time", "cacheRead", "cacheCreation", "input", "output", "hourLabel", "tickLabel"],
+    "sampleRows": [
+      ["1717200000", "25", "10", "3", "2", "Sat, Jun 01 · 00:00", "Sat 01"],
+      ["1717243200", "210", "55", "7", "5", "Sat, Jun 01 · 12:00", "Sat 01"],
+      ["1717286400", "30", "12", "3", "2", "Sun, Jun 02 · 00:00", "Sun 02"],
+      ["1717329600", "40", "15", "4", "3", "Sun, Jun 02 · 12:00", "Sun 02"],
+      ["1717372800", "180", "48", "6", "5", "Mon, Jun 03 · 00:00", "Mon 03"],
+      ["1717416000", "28", "11", "3", "2", "Mon, Jun 03 · 12:00", "Mon 03"],
+      ["1717459200", "35", "14", "4", "3", "Tue, Jun 04 · 00:00", "Tue 04"],
+      ["1717502400", "150", "40", "5", "4", "Tue, Jun 04 · 12:00", "Tue 04"],
+      ["1717545600", "26", "10", "3", "2", "Wed, Jun 05 · 00:00", "Wed 05"],
+      ["1717588800", "200", "52", "7", "5", "Wed, Jun 05 · 12:00", "Wed 05"],
+      ["1717632000", "30", "12", "3", "2", "Thu, Jun 06 · 00:00", "Thu 06"],
+      ["1717675200", "45", "16", "4", "3", "Thu, Jun 06 · 12:00", "Thu 06"],
+      ["1717718400", "175", "46", "6", "5", "Fri, Jun 07 · 00:00", "Fri 07"],
+      ["1717761600", "25", "10", "3", "2", "Fri, Jun 07 · 12:00", "Fri 07"]
+    ]
+  }
+}

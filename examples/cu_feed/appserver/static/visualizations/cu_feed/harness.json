@@ -1,0 +1,36 @@
+{
+  "label": "Agentic Usage — Activity Feed",
+  "defaultSize": { "width": 1460, "height": 420 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "Push Timeline" },
+    { "name": "subtitle", "label": "Subtitle", "type": "text", "default": "claude ↔ gitlab" },
+    { "name": "accentColor", "label": "Accent", "type": "color", "default": "#28b6a4" },
+    { "name": "timeField", "label": "Time Field", "type": "text", "default": "Time" },
+    { "name": "userField", "label": "User Field", "type": "text", "default": "User" },
+    { "name": "projectField", "label": "Project Field", "type": "text", "default": "Project" },
+    { "name": "textField", "label": "Text Field", "type": "text", "default": "Command" },
+    { "name": "badgeField", "label": "Badge Field", "type": "text", "default": "Badge" },
+    { "name": "detailField", "label": "Detail Field", "type": "text", "default": "Detail" },
+    { "name": "maxRows", "label": "Max Rows", "type": "text", "default": "100" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["Time", "User", "Project", "Command", "Badge", "Detail"],
+    "sampleRows": [
+      ["06-03 14:32:08", "tilen.mlakar", "tilen.mlakar/ssecsa-32", "git push origin feature/auth", "OK", ""],
+      ["06-03 14:28:51", "ratko.perlic", "ratko.perlic/dcnda-20-34", "git push --force-with-lease origin main", "FORCE", "Session: fec2dc95-98c6-4c60-a31d-9fe0f818a4a9 || Prompt: a96a4ac1-4428-4726-aad7-27dda7a35a32 || Work dir: /Volumes/SSD/ratko/git/DCNDA32 || Outcome: ok || Duration: 944 ms"],
+      ["06-03 14:21:17", "simon.spehar", "—", "git push origin hotfix/cache", "FAILED", "Session: 13b01f9d-eff4-4535-b38c-6b344d98862f || Prompt: ac92b829-bc3a-4f73-9a63-0867b74275a8 || Work dir: — || Outcome: failed — Shell command failed (ShellError) || Duration: 86 ms"],
+      ["06-03 14:09:44", "jakob.gazic", "jakob.gazic/dcnde20", "git push origin develop", "OK", ""],
+      ["06-03 13:58:02", "blaz.dolenc", "blaz.dolenc/agentic_usage", "git push origin main", "OK", ""],
+      ["06-03 13:47:33", "ratko.perlic", "ratko.perlic/dcnda-20-32", "git push origin feature/api", "OK", ""],
+      ["06-03 13:31:20", "jernej.dolinsek", "—", "git push --force origin main", "FAILED", "Session: 38ef3c57-51a1-4db9-9306-fc94c87174da || Prompt: 536cd6a7-aecd-4ade-b8e5-cb6450fe6522 || Work dir: — || Outcome: ok || Duration: 887 ms"],
+      ["06-03 13:12:55", "tilen.mlakar", "tilen.mlakar/ssecsa-32", "git push origin feature/auth", "OK", ""],
+      ["06-03 12:59:41", "denis.urek", "denis.urek/infra-tools", "git push origin main", "OK", ""],
+      ["06-03 12:44:18", "ratko.perlic", "ratko.perlic/dcnda-20-33", "git push --force-with-lease origin release", "FORCE", "Session: 82e0ca40-9cdb-41a2-bdd1-152e18cdafdb || Prompt: 6fde8497-1aea-4f0c-b873-e61a2b9bfca0 || Work dir: /Volumes/SSD/ratko/git/DCNDA32 || Outcome: ok || Duration: 750 ms"]
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "label": "Agentic Usage — Ranked Bars",
+  "defaultSize": { "width": 640, "height": 300 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "title", "label": "Title", "type": "text", "default": "Most AI-Active Repos" },
+    { "name": "subtitle", "label": "Subtitle", "type": "text", "default": "by Claude pushes" },
+    { "name": "barColor", "label": "Bar Colour", "type": "color", "default": "#28b6a4" },
+    { "name": "maxRows", "label": "Max Rows", "type": "text", "default": "0" },
+    { "name": "labelField", "label": "Label Field", "type": "text", "default": "Project" },
+    { "name": "valueField", "label": "Value Field", "type": "text", "default": "Claude Pushes" },
+    { "name": "valueUnit", "label": "Value Unit", "type": "text", "default": "" },
+    { "name": "secondaryField", "label": "Secondary Field", "type": "text", "default": "AI %" },
+    { "name": "secondarySuffix", "label": "Secondary Suffix", "type": "text", "default": "% AI" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["Project", "Claude Pushes", "AI %"],
+    "sampleRows": [
+      ["ratko.perlic/dcnda-20-34", "34", "64"],
+      ["ratko.perlic/dcnda-20-32", "27", "71"],
+      ["tilen.mlakar/ssecsa-32", "13", "100"],
+      ["jakob.gazic/dcnde20", "10", "77"],
+      ["ratko.perlic/dcnda-20-33", "9", "64"],
+      ["jakob.gazic/scor-c53", "6", "86"],
+      ["tilen.mlakar/ssecsa-33", "5", "45"],
+      ["ratko.perlic/dcnda-20-35", "4", "100"],
+      ["jakob.gazic/spa-lg", "3", "100"],
+      ["tilen.pokrivac/ssecsa-c22", "3", "50"],
+      ["denis.urek/infra-tools", "2", "40"],
+      ["blaz.dolenc/agentic_usage", "1", "100"]
+    ]
+  }
+}

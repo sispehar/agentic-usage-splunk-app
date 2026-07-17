@@ -1,0 +1,13 @@
+display.visualizations.custom.cu_stat.cu_stat.label = <string>
+display.visualizations.custom.cu_stat.cu_stat.bigField = <string>
+display.visualizations.custom.cu_stat.cu_stat.unit = <string>
+display.visualizations.custom.cu_stat.cu_stat.suffix = <string>
+display.visualizations.custom.cu_stat.cu_stat.accentColor = <string>
+display.visualizations.custom.cu_stat.cu_stat.barField = <string>
+display.visualizations.custom.cu_stat.cu_stat.barColor = <string>
+display.visualizations.custom.cu_stat.cu_stat.footnoteField = <string>
+display.visualizations.custom.cu_stat.cu_stat.kv1Label = <string>
+display.visualizations.custom.cu_stat.cu_stat.kv1Field = <string>
+display.visualizations.custom.cu_stat.cu_stat.kv2Label = <string>
+display.visualizations.custom.cu_stat.cu_stat.kv2Field = <string>
+display.visualizations.custom.cu_stat.cu_stat.theme = <string>

@@ -1,0 +1,11 @@
+display.visualizations.custom.cu_heatmap.cu_heatmap.title = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.subtitle = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.dayField = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.hourField = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.valueField = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.lowColor = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.highColor = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.valueDivisor = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.valueUnit = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.valueNoun = <string>
+display.visualizations.custom.cu_heatmap.cu_heatmap.theme = <string>

@@ -1,0 +1,69 @@
+<form class="splunk-formatter-section" section-label="Chart">
+    <splunk-control-group label="Title" help="Drawn top-left; leave blank to hide">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Token Usage by Hour"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Show Legend">
+        <splunk-radio-input name="{{VIZ_NAMESPACE}}.showLegend" value="true">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </splunk-radio-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Y Axis">
+    <splunk-control-group label="Value Divisor" help="Divide raw values for axis labels (e.g. 1000000 for tokens→M)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueDivisor" value="1"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Unit" help="Suffix on axis labels (e.g. M); leave blank for none">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueUnit" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Series Labels">
+    <splunk-control-group label="Series 1 Label" help="Legend/tooltip label for the front (read) series">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.readLabel" value="cacheRead"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Series 2 Label" help="Legend/tooltip label for the second (create) series">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.createLabel" value="cacheCreation"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Colours">
+    <splunk-control-group label="cacheRead">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.readColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="cacheCreation">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.createColor" value="#3aa6c2"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="input">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.inputColor" value="#f2643d"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="output">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.outputColor" value="#e6b24a"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Field Mapping">
+    <splunk-control-group label="Time Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.timeField" value="_time"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Hour Label Field" help="SPL column with the formatted hour for the tooltip (e.g. via strftime)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.labelField" value="hourLabel"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Tick Label Field" help="SPL column with the short x-axis label">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.tickLabelField" value="tickLabel"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="cacheRead Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.readField" value="cacheRead"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="cacheCreation Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.createField" value="cacheCreation"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="input Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.inputField" value="input"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="output Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.outputField" value="output"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

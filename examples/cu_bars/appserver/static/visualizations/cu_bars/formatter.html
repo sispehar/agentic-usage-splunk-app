@@ -1,0 +1,36 @@
+<form class="splunk-formatter-section" section-label="Bars">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Top Items"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Subtitle" help="Muted caption after the title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.subtitle" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Bar Colour">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.barColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Max Rows" help="0 = show all rows (scrollable); >0 = cap to N with a '+N more' footer">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.maxRows" value="0"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Fields">
+    <splunk-control-group label="Label Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.labelField" value="label"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Field" help="Numeric column; bar length and ranking">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueField" value="value"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Unit" help="Small suffix on the value (e.g. K)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueUnit" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Secondary Field" help="Optional column shown as a muted chip after the value; leave blank to hide">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.secondaryField" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Secondary Suffix" help="Text appended to the secondary value (e.g. % AI)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.secondarySuffix" value="%"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

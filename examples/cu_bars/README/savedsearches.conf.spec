@@ -1,0 +1,10 @@
+display.visualizations.custom.cu_bars.cu_bars.title = <string>
+display.visualizations.custom.cu_bars.cu_bars.subtitle = <string>
+display.visualizations.custom.cu_bars.cu_bars.labelField = <string>
+display.visualizations.custom.cu_bars.cu_bars.valueField = <string>
+display.visualizations.custom.cu_bars.cu_bars.valueUnit = <string>
+display.visualizations.custom.cu_bars.cu_bars.secondaryField = <string>
+display.visualizations.custom.cu_bars.cu_bars.secondarySuffix = <string>
+display.visualizations.custom.cu_bars.cu_bars.barColor = <string>
+display.visualizations.custom.cu_bars.cu_bars.maxRows = <integer>
+display.visualizations.custom.cu_bars.cu_bars.theme = <string>

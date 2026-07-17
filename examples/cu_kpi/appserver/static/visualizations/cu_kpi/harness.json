@@ -1,0 +1,24 @@
+{
+  "label": "Agentic Usage — KPI Tile",
+  "defaultSize": { "width": 280, "height": 150 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [
+    { "name": "value", "label": "Value", "type": "text", "default": "5.6B" },
+    { "name": "delta", "label": "Delta %", "type": "slider", "min": -100, "max": 100, "step": 1, "default": -34 }
+  ],
+  "formatter": [
+    { "name": "label", "label": "Label", "type": "text", "default": "TOTAL TOKENS" },
+    { "name": "unit", "label": "Unit", "type": "text", "default": "" },
+    { "name": "hero", "label": "Hero", "type": "radio", "options": ["true", "false"], "default": "true" },
+    { "name": "accentColor", "label": "Accent", "type": "color", "default": "#28b6a4" },
+    { "name": "frame", "label": "Frame", "type": "select", "options": ["bracket", "cut", "rounded"], "default": "bracket" },
+    { "name": "valueField", "label": "Value Field", "type": "text", "default": "value" },
+    { "name": "deltaField", "label": "Delta Field", "type": "text", "default": "delta" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "single_row",
+    "columns": ["value", "delta"]
+  }
+}

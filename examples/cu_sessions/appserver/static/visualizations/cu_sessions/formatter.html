@@ -1,0 +1,34 @@
+<form class="splunk-formatter-section" section-label="Board">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Active Sessions"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Subtitle" help="Small uppercase caption next to the title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.subtitle" value="live · 30m window"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Accent Colour" help="Accent colour (hex)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.accentColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Liveness">
+    <splunk-control-group label="Active Threshold (s)" help="Sessions seen within this many seconds pulse as live; older ones dim to idle">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.activeThresholdSec" value="120"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Context Bar">
+    <splunk-control-group label="Warn Threshold (%)" help="Context bar turns gold at this fill percentage">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.ctxWarnPct" value="60"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="High Threshold (%)" help="Context bar turns coral at this fill percentage">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.ctxHighPct" value="85"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Display">
+    <splunk-control-group label="Max Rows" help="Maximum number of sessions to render">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.maxRows" value="50"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

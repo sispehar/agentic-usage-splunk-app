@@ -1,0 +1,32 @@
+{
+  "label": "Agentic Usage — Stat Panel",
+  "defaultSize": { "width": 300, "height": 220 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [
+    { "name": "value", "label": "Value", "type": "slider", "min": 0, "max": 100, "step": 0.5, "default": 97.5 },
+    { "name": "pct", "label": "Bar %", "type": "slider", "min": 0, "max": 100, "step": 1, "default": 97 },
+    { "name": "foot", "label": "Footnote", "type": "text", "default": "cowork · 2.5%" },
+    { "name": "peak_hour", "label": "Peak Hour", "type": "text", "default": "Sat 10:00" },
+    { "name": "worst_user", "label": "Worst User", "type": "text", "default": "simon.spehar" }
+  ],
+  "formatter": [
+    { "name": "label", "label": "Label", "type": "text", "default": "Claude vs Cowork" },
+    { "name": "accentColor", "label": "Accent", "type": "color", "default": "#f2643d" },
+    { "name": "bigField", "label": "Value Field", "type": "text", "default": "value" },
+    { "name": "unit", "label": "Unit", "type": "text", "default": "%" },
+    { "name": "suffix", "label": "Suffix", "type": "text", "default": "" },
+    { "name": "barField", "label": "Bar Field", "type": "text", "default": "pct" },
+    { "name": "barColor", "label": "Bar Colour", "type": "color", "default": "#f2643d" },
+    { "name": "footnoteField", "label": "Footnote Field", "type": "text", "default": "foot" },
+    { "name": "kv1Label", "label": "Row 1 Label", "type": "text", "default": "" },
+    { "name": "kv1Field", "label": "Row 1 Field", "type": "text", "default": "" },
+    { "name": "kv2Label", "label": "Row 2 Label", "type": "text", "default": "" },
+    { "name": "kv2Field", "label": "Row 2 Field", "type": "text", "default": "" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "single_row",
+    "columns": ["value", "pct", "foot", "peak_hour", "worst_user"]
+  }
+}

@@ -1,0 +1,43 @@
+<form class="splunk-formatter-section" section-label="Heatmap">
+    <splunk-control-group label="Title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Activity Heatmap"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Subtitle" help="Muted caption after the title">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.subtitle" value="tokens by date &amp; hour"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Colours">
+    <splunk-control-group label="Low (cool)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.lowColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="High (hot)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.highColor" value="#f2643d"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Tooltip Value">
+    <splunk-control-group label="Value Divisor" help="Divide raw value for labels (e.g. 1000000 for tokens→M)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueDivisor" value="1"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Unit" help="Suffix on values (e.g. M); leave blank for none">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueUnit" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Noun" help="Word after the value in the hover tooltip (e.g. tokens, pushes)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueNoun" value="tokens"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Field Mapping">
+    <splunk-control-group label="Day Field" help="Row label, e.g. strftime(_time,&quot;%a&quot;)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.dayField" value="d"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Hour Field" help="0–23 column index">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.hourField" value="h"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Value Field">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueField" value="v"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

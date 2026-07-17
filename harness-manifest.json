@@ -1,0 +1,30 @@
+{
+  "pathTemplate": "examples/{name}/appserver/static/visualizations/{name}",
+  "fontCSS": "shared/fonts.css",
+  "categories": {
+    "Agentic Usage": [
+      "cu_kpi",
+      "cu_leaderboard",
+      "cu_stat",
+      "cu_area",
+      "cu_donut",
+      "cu_heatmap",
+      "cu_feed",
+      "cu_bars",
+      "cu_sessions",
+      "cu_ticker"
+    ]
+  },
+  "vizs": [
+    "cu_kpi",
+    "cu_leaderboard",
+    "cu_stat",
+    "cu_area",
+    "cu_donut",
+    "cu_heatmap",
+    "cu_feed",
+    "cu_bars",
+    "cu_sessions",
+    "cu_ticker"
+  ]
+}

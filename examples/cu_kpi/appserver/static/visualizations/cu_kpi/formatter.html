@@ -1,0 +1,37 @@
+<form class="splunk-formatter-section" section-label="KPI Tile">
+    <splunk-control-group label="Label" help="Uppercase label shown above the value">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.label" value="METRIC"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Unit" help="Optional unit appended to the value (e.g. %, B, K)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.unit" value=""></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Hero" help="Emphasise this tile (larger value, accent corners + glow)">
+        <splunk-radio-input name="{{VIZ_NAMESPACE}}.hero" value="false">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </splunk-radio-input>
+    </splunk-control-group>
+    <splunk-control-group label="Accent Colour" help="Accent for hero corners (hex, e.g. #28b6a4)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.accentColor" value="#28b6a4"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Frame" help="Tile frame style">
+        <splunk-select name="{{VIZ_NAMESPACE}}.frame" value="bracket">
+            <option value="bracket">Bracket (HUD)</option>
+            <option value="cut">Cut corner</option>
+            <option value="rounded">Rounded</option>
+        </splunk-select>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Field Mapping">
+    <splunk-control-group label="Value Field" help="SPL column holding the display value">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.valueField" value="value"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Delta Field" help="SPL column holding the signed % delta (optional)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.deltaField" value="delta"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

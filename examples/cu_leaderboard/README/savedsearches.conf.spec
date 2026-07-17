@@ -1,0 +1,13 @@
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.title = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.metricField = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.metricColLabel = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.metricLabel = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.metricUnit = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.metricPrefix = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.nameField = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.serviceField = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.costField = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.cacheField = <string>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.showPodium = <boolean>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.rowsPerPage = <integer>
+display.visualizations.custom.cu_leaderboard.cu_leaderboard.theme = <string>

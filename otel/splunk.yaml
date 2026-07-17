@@ -1,0 +1,91 @@
+# Splunk deployment overlay for the ai-harness-otel normalization base.
+# This file contains ONLY the Splunk-specific pieces — the normalization logic
+# (OTTL transforms, PII scrub, temporality, Codex metric synthesis) lives in
+# the ai-harness-otel repo and is composed at runtime:
+#
+#   export SPLUNK_HEC_TOKEN=...
+#   export SPLUNK_HEC_URL=https://<splunk-host>:8088/services/collector
+#   otelcol-contrib --config /path/to/ai-harness-otel/config/normalize.yaml \
+#                   --config otel/splunk.yaml
+#
+# Pin the normalize.yaml you deploy (git tag / commit) — see otel/README.md.
+#
+# MERGE SEMANTICS: maps merge per-key, lists replace wholesale. That is why
+# every pipeline's exporters list is restated below (the logs pipeline MUST
+# keep the sum + count connectors — they synthesize Codex metrics), and the
+# metrics pipeline's receivers list is restated to add the collector
+# self-scrape.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        # Production TLS termination — point at your real certs, or delete the
+        # tls: blocks when clients reach the collector over a trusted network.
+        tls:
+          cert_file: /etc/otel/certs/fullchain.pem
+          key_file: /etc/otel/certs/privkey.pem
+          reload_interval: 24h
+      http:
+        tls:
+          cert_file: /etc/otel/certs/fullchain.pem
+          key_file: /etc/otel/certs/privkey.pem
+          reload_interval: 24h
+
+  # Collector self-telemetry -> agentic_metrics (otelcol_* metric names; the
+  # dashboards filter on metric_name, so these are harmless and useful for
+  # collector health).
+  prometheus/internal:
+    config:
+      scrape_configs:
+        - job_name: otel-collector
+          scrape_interval: 30s
+          static_configs:
+            - targets: [localhost:8888]
+
+exporters:
+  splunk_hec/logs:
+    token: "${env:SPLUNK_HEC_TOKEN}"
+    endpoint: "${env:SPLUNK_HEC_URL}"
+    source: "otel"
+    sourcetype: "agentic:events"
+    index: "agentic"
+    tls:
+      insecure_skip_verify: true
+  splunk_hec/metrics:
+    token: "${env:SPLUNK_HEC_TOKEN}"
+    endpoint: "${env:SPLUNK_HEC_URL}"
+    source: "otel"
+    sourcetype: "agentic:metrics"
+    index: "agentic_metrics"
+    tls:
+      insecure_skip_verify: true
+  splunk_hec/traces:
+    token: "${env:SPLUNK_HEC_TOKEN}"
+    endpoint: "${env:SPLUNK_HEC_URL}"
+    source: "otel"
+    sourcetype: "agentic:traces"
+    index: "agentic"
+    tls:
+      insecure_skip_verify: true
+
+service:
+  # Serve the collector's own metrics for the self-scrape above.
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: localhost
+                port: 8888
+  pipelines:
+    logs:
+      exporters: [splunk_hec/logs, sum, count]
+    metrics:
+      receivers: [otlp, prometheus/internal]
+      exporters: [splunk_hec/metrics]
+    metrics/synth:
+      exporters: [splunk_hec/metrics]
+    traces:
+      exporters: [splunk_hec/traces]
