@@ -52,6 +52,7 @@ define([
         return h + 'h' + (m % 60 < 10 ? '0' : '') + (m % 60) + 'm';
     }
     function fmtCost(v) {
+        if (v === null || v === undefined || isNaN(v)) { return '—'; }
         if (v >= 1000) { return '$' + (v / 1000).toFixed(1) + 'K'; }
         if (v >= 100) { return '$' + Math.round(v); }
         return '$' + v.toFixed(2);

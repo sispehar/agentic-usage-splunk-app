@@ -99,9 +99,16 @@ Create a HEC token with access to both.
 
 - `` `agentic_data` `` → `index=agentic` (events)
 - `` `agentic_metrics` `` → `index=agentic_metrics` (metrics)
-- `` `harness_label(1)` `` → display name per `service.name` value. **Adding a
-  harness to the collector? Add its label here and (optionally) a dropdown
-  entry in the two dashboards — that's the whole app-side change.**
+- `` `harness_key(2)` `` → canonical harness key used by every filter and
+  grouping. Prefers a well-known `service.name` (that's what tells Claude
+  Code / Claude Desktop / Cowork apart — they share one collector lane), falls
+  back to the collector's stable `agentic.harness.name` discriminator so a
+  custom `OTEL_SERVICE_NAME` still lands in the right bucket, and keeps the
+  raw `service.name` for unrecognized producers.
+- `` `harness_label(1)` `` → display name per harness key. **Adding a harness
+  to the collector? Add it to `harness_key(2)`, `harness_label(1)`, and the
+  Harness dropdown items in the two dashboards — that's the whole app-side
+  change.**
 
 ### Context-window lookup
 
@@ -141,15 +148,64 @@ accounting. Searches include only `total` and `exclusive`
 used only for breakdowns such as cache ratio. This avoids counting cached or
 reasoning tokens twice.
 
+## Deployment invariants & data caveats
+
+The searches assume a few things about how the collector is deployed. Violating
+them doesn't error — panels silently show less, so read this once:
+
+- **Per-user panels need identity on *metrics*.** The Overview's user dropdown,
+  DISTINCT USERS, leaderboard, and adoption panels group metric datapoints by
+  `user.email`/`user.id`. The collector's optional
+  `low-cardinality-metrics.yaml` profile strips exactly those from metric
+  resources — do **not** deploy that profile with this app. (The Sessions
+  board is log-based and unaffected; logs always retain identity.)
+- **Custom `OTEL_SERVICE_NAME` values** are folded into their canonical
+  harness bucket via `agentic.harness.name` (see `harness_key(2)`), so they
+  stay filterable — but within the Claude lane they can't be told apart from
+  Claude Code proper, since Desktop/Cowork are distinguished only by their
+  well-known service names. Prefer leaving `OTEL_SERVICE_NAME` unset.
+- **The Contract drift panel** (Overview, bottom row) counts the drift
+  signatures NORMALIZATION.md tells consumers to watch: `agentic.token.usage`
+  points missing `agentic.token.type`/`agentic.token.relationship`,
+  `agentic.api_request` events without `gen_ai.usage.input_tokens`, raw source
+  keys surviving on normalized events (`input_tokens`, `*_token_count`,
+  `cost_usd*`, `duration_ms`, `model`, …), events that kept a harness-prefixed
+  name that previously normalized, and `agentic.change.type` values the LOC
+  panel doesn't recognize. Anything > 0 means the collector pin and the
+  harness version have drifted apart and every other number on the page may
+  under-count. This is the one panel that deliberately probes non-contract
+  key names (fail-open drift evidence per NORMALIZATION.md), and it ignores
+  the User/Harness filters — drift is pipeline-global.
+- **Producer-defined enum values in SPL** (values, not names, so outside the
+  versioned contract): NET LINES OF CODE assumes `agentic.change.type` is
+  `added`/`removed` (both Claude and Gemini pass their `type` through
+  verbatim; unrecognized values surface in the drift footnote instead of
+  being silently dropped), and the Sessions board's context-fill estimate
+  prefers Claude's `agentic.query.source="repl_main_thread"` requests, with a
+  null-safe fallback for harnesses that don't emit `query.source`.
+- **Claude emits no `agentic.session_started` *event*** (metric only) — the
+  Sessions ticker never shows "started a session" for Claude-family
+  harnesses; SESSIONS TODAY uses the metric and covers all harnesses.
+- **The Sessions time picker drives only the user dropdown** — every panel
+  pins its own live window (30 m / 60 m / today / 4 h / 24 h) by design.
+
 ## Known per-harness gaps (iteration 1)
 
-- **Estimated cost is Claude-only** — Gemini/Codex report no cost telemetry, so the cost
-  KPI, burn rate, and leaderboard cost column under-count for them.
+- **Estimated cost is Claude-only** — Gemini/Codex report no cost telemetry
+  (and the pinned GenAI semconv defines no cost convention at all). The cost
+  KPIs are labeled "· CLAUDE ONLY" on the dashboards, show `n/a` when the
+  Harness filter is Gemini CLI/Codex, and the leaderboard/session-board cost
+  columns render `—` for users or sessions with no cost datapoints, so "no
+  data" is never displayed as `$0`.
 - **Provider** appears on the session board only when the harness reports
   `gen_ai.provider.name` (or a trusted gateway supplies it). The collector does
   not infer provider from the harness vendor.
 - **Codex** reports fewer event kinds (no compaction/subagent/permission
   events); its per-response input total can make context-fill % approximate.
+  Legacy (pre-0.128) Codex synthesis emits token points without a model
+  dimension — they land in the AI Models donut's "Unknown" slice — and its
+  `source_specific` cache-creation category is excluded from totals, exactly
+  as the relationship contract prescribes.
 - **Lines of code** come from Claude and Gemini only; commits/PRs from Claude
   only.
 

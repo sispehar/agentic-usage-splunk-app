@@ -117,7 +117,7 @@
             "type": "agentic_usage.cu_kpi",
             "options": {
                 "agentic_usage.cu_kpi.theme": "$theme$",
-                "agentic_usage.cu_kpi.label": "ESTIMATED COST",
+                "agentic_usage.cu_kpi.label": "EST. COST · CLAUDE ONLY",
                 "agentic_usage.cu_kpi.valueField": "value",
                 "agentic_usage.cu_kpi.hero": "false",
                 "agentic_usage.cu_kpi.accentColor": "#f2643d"
@@ -198,7 +198,8 @@
                 "agentic_usage.cu_stat.kv1Label": "peak hour",
                 "agentic_usage.cu_stat.kv1Field": "peak_hour",
                 "agentic_usage.cu_stat.kv2Label": "worst user",
-                "agentic_usage.cu_stat.kv2Field": "worst_user"
+                "agentic_usage.cu_stat.kv2Field": "worst_user",
+                "agentic_usage.cu_stat.footnoteField": "foot"
             },
             "dataSources": {
                 "primary": "ds_ratelimit"
@@ -251,6 +252,23 @@
                 "primary": "ds_heatmap"
             }
         },
+        "viz_drift": {
+            "type": "agentic_usage.cu_stat",
+            "options": {
+                "agentic_usage.cu_stat.theme": "$theme$",
+                "agentic_usage.cu_stat.label": "Contract drift",
+                "agentic_usage.cu_stat.bigField": "value",
+                "agentic_usage.cu_stat.accentColor": "#f2643d",
+                "agentic_usage.cu_stat.kv1Label": "no-relationship pts",
+                "agentic_usage.cu_stat.kv1Field": "norel",
+                "agentic_usage.cu_stat.kv2Label": "tokenless api_req",
+                "agentic_usage.cu_stat.kv2Field": "tokenless",
+                "agentic_usage.cu_stat.footnoteField": "foot"
+            },
+            "dataSources": {
+                "primary": "ds_drift"
+            }
+        },
         "viz_harness": {
             "type": "agentic_usage.cu_donut",
             "options": {
@@ -271,7 +289,7 @@
         "ds_userlist": {
             "type": "ds.search",
             "options": {
-                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where isnotnull(identity) | stats count BY identity | eval value=identity, label=identity | sort label | fields label value",
+                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | where isnotnull(identity) | stats count BY identity | eval value=identity, label=identity | sort label | fields label value",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -283,7 +301,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats dc(identity) AS value | appendpipe [| stats count | where count=0 | eval _status=\"Configure local/macros.conf to point at your telemetry indexes\", value=0]",
+                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats dc(identity) AS value | where value>0 | appendpipe [| stats count | where count=0 | eval _status=\"Configure local/macros.conf to point at your telemetry indexes\", value=0]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -295,7 +313,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS total WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(total) AS total | eval value=case(total>=1000000000, round(total/1000000000,1).\"B\", total>=1000000, round(total/1000000,1).\"M\", total>=1000, round(total/1000,1).\"K\", 1=1, tostring(total)) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"0\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS total WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(total) AS total | where isnotnull(total) | eval value=case(total>=1000000000, round(total/1000000000,1).\"B\", total>=1000000, round(total/1000000,1).\"M\", total>=1000, round(total/1000,1).\"K\", 1=1, tostring(total)) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"0\"]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -307,7 +325,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS total WHERE `agentic_metrics` metric_name=\"agentic.cost.estimated\" BY \"user.email\" \"user.id\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(total) AS total | eval value=\"$\".tostring(round(total,2),\"commas\") | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"$0\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS total WHERE `agentic_metrics` metric_name=\"agentic.cost.estimated\" BY \"user.email\" \"user.id\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(total) AS total | eval value=case(\"$selected_service$\" IN (\"gemini-cli\",\"codex\"), \"n/a\", isnotnull(total), urldecode(\"%24\").tostring(round(total,2),\"commas\"), true(), null()) | where isnotnull(value) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=urldecode(\"%24\").\"0\"]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -319,7 +337,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS lines WHERE `agentic_metrics` metric_name=\"agentic.code.lines.changed\" BY \"user.email\" \"user.id\" \"agentic.change.type\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if('agentic.change.type'==\"added\",lines,0))) AS added sum(eval(if('agentic.change.type'==\"removed\",lines,0))) AS removed | eval value=round((added-removed)/1000,1) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS lines WHERE `agentic_metrics` metric_name=\"agentic.code.lines.changed\" BY \"user.email\" \"user.id\" \"agentic.change.type\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(eval(if('agentic.change.type'==\"added\",lines,0))) AS added sum(eval(if('agentic.change.type'==\"removed\",lines,0))) AS removed | where isnotnull(added) OR isnotnull(removed) | eval value=round((coalesce(added,0)-coalesce(removed,0))/1000,1) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -331,7 +349,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"agentic.token.type\" \"agentic.token.relationship\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if('agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship' IN (\"subset\",\"exclusive\"),tokens,0))) AS cached sum(eval(if(('agentic.token.type'==\"input\" AND 'agentic.token.relationship'==\"total\") OR ('agentic.token.relationship'==\"exclusive\" AND 'agentic.token.type' IN (\"input_uncached\",\"cache_read\",\"cache_creation\")),tokens,0))) AS input_total | eval value=if(input_total>0, round(cached/input_total*100,1), 0) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"agentic.token.type\" \"agentic.token.relationship\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(eval(if('agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship' IN (\"subset\",\"exclusive\"),tokens,0))) AS cached sum(eval(if(('agentic.token.type'==\"input\" AND 'agentic.token.relationship'==\"total\") OR ('agentic.token.relationship'==\"exclusive\" AND 'agentic.token.type' IN (\"input_uncached\",\"cache_read\",\"cache_creation\")),tokens,0))) AS input_total | where isnotnull(input_total) | eval value=if(input_total>0, round(cached/input_total*100,1), 0) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -343,7 +361,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS amount WHERE `agentic_metrics` metric_name IN (\"agentic.token.usage\",\"agentic.cost.estimated\") BY metric_name \"user.email\" \"user.id\" \"agentic.token.type\" \"agentic.token.relationship\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if(metric_name==\"agentic.token.usage\" AND 'agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship' IN (\"subset\",\"exclusive\"),amount,0))) AS cacheRead sum(eval(if(metric_name==\"agentic.token.usage\" AND (('agentic.token.type'==\"input\" AND 'agentic.token.relationship'==\"total\") OR ('agentic.token.relationship'==\"exclusive\" AND 'agentic.token.type' IN (\"input_uncached\",\"cache_read\",\"cache_creation\"))),amount,0))) AS input_tokens sum(eval(if(metric_name==\"agentic.token.usage\" AND 'agentic.token.relationship' IN (\"total\",\"exclusive\"),amount,0))) AS total_tokens sum(eval(if(metric_name==\"agentic.cost.estimated\",amount,0))) AS cost values(eval(if(metric_name==\"agentic.token.usage\",'service.name',null()))) AS svc BY identity | eval User=identity | eval s0=mvindex(svc,0) | eval Service=if(mvcount(svc)>=2, \"Multi\", `harness_label(s0)`) | eval \"Cache %\"=if(input_tokens>0,round(cacheRead/input_tokens*100,1),0) | eval \"Cost ($)\"=round(coalesce(cost,0),2) | eval \"Tokens (M)\"=round(total_tokens/1000000,1) | sort - total_tokens | fields User Service \"Tokens (M)\" \"Cost ($)\" \"Cache %\" | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", User=\"\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS amount WHERE `agentic_metrics` metric_name IN (\"agentic.token.usage\",\"agentic.cost.estimated\") BY metric_name \"user.email\" \"user.id\" \"agentic.token.type\" \"agentic.token.relationship\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(eval(if(metric_name==\"agentic.token.usage\" AND 'agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship' IN (\"subset\",\"exclusive\"),amount,0))) AS cacheRead sum(eval(if(metric_name==\"agentic.token.usage\" AND (('agentic.token.type'==\"input\" AND 'agentic.token.relationship'==\"total\") OR ('agentic.token.relationship'==\"exclusive\" AND 'agentic.token.type' IN (\"input_uncached\",\"cache_read\",\"cache_creation\"))),amount,0))) AS input_tokens sum(eval(if(metric_name==\"agentic.token.usage\" AND 'agentic.token.relationship' IN (\"total\",\"exclusive\"),amount,0))) AS total_tokens sum(eval(if(metric_name==\"agentic.cost.estimated\",amount,0))) AS cost values(eval(if(metric_name==\"agentic.token.usage\",hkey,null()))) AS svc BY identity | eval User=identity | eval s0=mvindex(svc,0) | eval Service=if(mvcount(svc)>=2, \"Multi\", `harness_label(s0)`) | eval \"Cache %\"=if(input_tokens>0,round(cacheRead/input_tokens*100,1),0) | eval \"Cost ($)\"=if(coalesce(cost,0)>0, round(cost,2), null()) | eval \"Tokens (M)\"=round(total_tokens/1000000,1) | sort - total_tokens | fields User Service \"Tokens (M)\" \"Cost ($)\" \"Cache %\" | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", User=\"\"]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -355,7 +373,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" span=1h BY \"user.email\" \"user.id\" \"agentic.token.type\" \"agentic.token.relationship\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(eval(if('agentic.token.type'==\"input\" AND 'agentic.token.relationship'==\"total\",tokens,0))) AS input_total sum(eval(if('agentic.token.type'==\"input_uncached\" AND 'agentic.token.relationship'==\"exclusive\",tokens,0))) AS input_uncached sum(eval(if('agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship'==\"subset\",tokens,0))) AS cache_read_subset sum(eval(if('agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship' IN (\"subset\",\"exclusive\"),tokens,0))) AS cache_read sum(eval(if('agentic.token.type'==\"cache_creation\" AND 'agentic.token.relationship'==\"exclusive\",tokens,0))) AS cache_creation sum(eval(if('agentic.token.type'==\"output\" AND 'agentic.token.relationship'==\"total\",tokens,0))) AS output BY _time | eval input=max(input_total+input_uncached-cache_read_subset,0) | fields _time input output cache_read cache_creation | eval hourLabel=strftime(_time,\"%a, %b %d · %H:%M\"), tickLabel=strftime(_time,\"%a %d\") | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" span=1h BY \"user.email\" \"user.id\" \"agentic.token.type\" \"agentic.token.relationship\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(eval(if('agentic.token.type'==\"input\" AND 'agentic.token.relationship'==\"total\",tokens,0))) AS input_total sum(eval(if('agentic.token.type'==\"input_uncached\" AND 'agentic.token.relationship'==\"exclusive\",tokens,0))) AS input_uncached sum(eval(if('agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship'==\"subset\",tokens,0))) AS cache_read_subset sum(eval(if('agentic.token.type'==\"cache_read\" AND 'agentic.token.relationship' IN (\"subset\",\"exclusive\"),tokens,0))) AS cache_read sum(eval(if('agentic.token.type'==\"cache_creation\" AND 'agentic.token.relationship'==\"exclusive\",tokens,0))) AS cache_creation sum(eval(if('agentic.token.type'==\"output\" AND 'agentic.token.relationship'==\"total\",tokens,0))) AS output BY _time | eval input=max(input_total+input_uncached-cache_read_subset,0) | fields _time input output cache_read cache_creation | eval hourLabel=strftime(_time,\"%a, %b %d · %H:%M\"), tickLabel=strftime(_time,\"%a %d\") | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\"]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -367,7 +385,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "`agentic_data` event.name IN (\"agentic.api_error\",\"gen_ai.client.operation.exception\") | eval identity=coalesce('user.email','user.id') | where tonumber('http.response.status_code')==429 OR 'error.type'==\"429\" OR match(coalesce('error.type',\"\"), \"(?i)rate.?limit\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats count AS value | appendcols [search `agentic_data` event.name IN (\"agentic.api_error\",\"gen_ai.client.operation.exception\") | eval identity=coalesce('user.email','user.id') | where tonumber('http.response.status_code')==429 OR 'error.type'==\"429\" OR match(coalesce('error.type',\"\"), \"(?i)rate.?limit\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval h=strftime(_time,\"%a %H:00\") | stats count BY h | sort - count | head 1 | rename h AS peak_hour | fields peak_hour] | appendcols [search `agentic_data` event.name IN (\"agentic.api_error\",\"gen_ai.client.operation.exception\") | eval identity=coalesce('user.email','user.id') | where tonumber('http.response.status_code')==429 OR 'error.type'==\"429\" OR match(coalesce('error.type',\"\"), \"(?i)rate.?limit\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval wu=mvindex(split(identity,\"@\"),0) | stats count BY wu | sort - count | head 1 | rename wu AS worst_user | fields worst_user] | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "query": "`agentic_data` event.name IN (\"agentic.api_error\",\"gen_ai.client.operation.exception\",\"agentic.api_retries_exhausted\") | eval identity=coalesce('user.email','user.id'), svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | eval is_rl=if(tonumber('http.response.status_code')==429 OR 'error.type'==\"429\" OR match(coalesce('error.type',\"\"), \"(?i)rate.?limit\"),1,0), is_ex=if('event.name'==\"agentic.api_retries_exhausted\",1,0) | where is_rl==1 OR is_ex==1 | eval h=strftime(_time,\"%a %H:00\"), wu=mvindex(split(coalesce(identity,\"unknown\"),\"@\"),0) | stats sum(is_rl) AS c sum(is_ex) AS ex BY h wu | appendpipe [| stats sum(c) AS hc BY h | where hc>0 | sort - hc | head 1 | eval peak_hour=h | fields peak_hour] | appendpipe [| stats sum(c) AS wc BY wu | where wc>0 | sort - wc | head 1 | eval worst_user=wu | fields worst_user] | stats sum(c) AS value sum(ex) AS exhausted values(peak_hour) AS peak_hour values(worst_user) AS worst_user | eval value=coalesce(value,0), foot=\"API retries exhausted: \".coalesce(exhausted,0) | fields value peak_hour worst_user foot | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -379,7 +397,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" span=1d BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | where isnotnull(identity) | stats max(_time) AS last_seen BY identity | eventstats max(last_seen) AS latest_day | stats count AS seats count(eval(last_seen==latest_day)) AS value | eval pct=if(seats>0,round(value/seats*100),0), foot=value.\" of \".seats.\" observed users · \".pct.\"% active on latest day\" | fields value seats pct foot | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
+                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" span=1d BY \"user.email\" \"user.id\" \"service.name\" \"agentic.token.relationship\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | where isnotnull(identity) | stats max(_time) AS last_seen BY identity | eventstats max(last_seen) AS latest_day | stats count AS seats count(eval(last_seen==latest_day)) AS value | where seats>0 | eval pct=if(seats>0,round(value/seats*100),0), foot=value.\" of \".seats.\" observed users · \".pct.\"% active on latest day\" | fields value seats pct foot | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -391,7 +409,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"gen_ai.request.model\" \"agentic.token.relationship\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval model=if('gen_ai.request.model'==\"__missing__\",\"Unknown\",'gen_ai.request.model') | stats sum(tokens) AS value BY model | sort - value | table model value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", model=\"\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"gen_ai.request.model\" \"agentic.token.relationship\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | eval model=if('gen_ai.request.model'==\"__missing__\",\"Unknown\",'gen_ai.request.model') | stats sum(tokens) AS value BY model | sort - value | table model value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", model=\"\"]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -403,7 +421,19 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS v WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" span=1h BY \"user.email\" \"user.id\" \"agentic.token.relationship\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | eval daykey=strftime(_time,\"%Y%m%d\"), d=strftime(_time,\"%a %m/%d\"), h=tonumber(strftime(_time,\"%H\")) | stats sum(v) AS v BY daykey d h | sort daykey h | fields d h v | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", d=\"\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS v WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" span=1h BY \"user.email\" \"user.id\" \"agentic.token.relationship\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | eval daykey=strftime(_time,\"%Y%m%d\"), d=strftime(_time,\"%a %m/%d\"), h=tonumber(strftime(_time,\"%H\")) | stats sum(v) AS v BY daykey d h | sort daykey h | fields d h v | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", d=\"\"]",
+                "queryParameters": {
+                    "earliest": "$tr.earliest$",
+                    "latest": "$tr.latest$"
+                }
+            }
+        },
+        "ds_drift": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "60s",
+                "refreshType": "delay",
+                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS pts WHERE `agentic_metrics` metric_name IN (\"agentic.token.usage\",\"agentic.code.lines.changed\") BY metric_name \"agentic.token.type\" \"agentic.token.relationship\" \"agentic.change.type\" | stats sum(eval(if(metric_name==\"agentic.token.usage\" AND ('agentic.token.type'==\"__missing__\" OR 'agentic.token.relationship'==\"__missing__\"),pts,0))) AS norel sum(eval(if(metric_name==\"agentic.code.lines.changed\" AND NOT 'agentic.change.type' IN (\"added\",\"removed\"),pts,0))) AS locdrift | appendcols [search `agentic_data` ((event.name=\"agentic.api_request\" AND NOT gen_ai.usage.input_tokens=*) OR (event.name IN (\"agentic.api_request\",\"agentic.api_error\",\"agentic.user_prompt\",\"agentic.tool_result\",\"agentic.tool_execution\",\"agentic.tool_decision\",\"agentic.session_started\",\"agentic.compaction\",\"agentic.subagent_completed\",\"agentic.api_retries_exhausted\",\"agentic.permission_mode_changed\") AND (input_tokens=* OR output_tokens=* OR input_token_count=* OR output_token_count=* OR token_type=* OR cost_usd=* OR cost_usd_micros=* OR duration_ms=* OR model=* OR conversation.id=*)) OR ((event.name=\"*.api_request\" OR event.name=\"*.api_error\" OR event.name=\"*.user_prompt\" OR event.name=\"*.tool_result\" OR event.name=\"*.tool_decision\" OR event.name=\"*.compaction\" OR event.name=\"*.subagent_completed\") AND NOT event.name=\"agentic.*\")) | eval sig=case('event.name'==\"agentic.api_request\" AND isnull('gen_ai.usage.input_tokens'),\"tokenless\", NOT like('event.name',\"agentic.%\"),\"renamed\", true(),\"rawkey\") | stats count(eval(sig==\"tokenless\")) AS tokenless count(eval(sig==\"rawkey\")) AS rawkeys count(eval(sig==\"renamed\")) AS renamed] | appendcols [search `agentic_data` agentic.normalizer.version=* | head 1 | eval nv='agentic.normalizer.version' | fields nv] | eval norel=coalesce(norel,0), locdrift=coalesce(locdrift,0), tokenless=coalesce(tokenless,0), rawkeys=coalesce(rawkeys,0), renamed=coalesce(renamed,0) | eval value=norel+tokenless+rawkeys+renamed+locdrift | eval foot=\"raw keys \".rawkeys.\" · renamed evts \".renamed.\" · loc types \".locdrift.if(isnotnull(nv),\" · norm \".nv,\"\") | fields value norel tokenless foot | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=0]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -415,7 +445,7 @@
             "options": {
                 "refresh": "60s",
                 "refreshType": "delay",
-                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"agentic.token.relationship\" \"service.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR 'service.name'==\"$selected_service$\" | stats sum(tokens) AS value BY \"service.name\" | eval s0='service.name' | eval harness=`harness_label(s0)` | sort - value | table harness value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", harness=\"\"]",
+                "query": "| mstats fillnull_value=\"__missing__\" sum(_value) AS tokens WHERE `agentic_metrics` metric_name=\"agentic.token.usage\" BY \"user.email\" \"user.id\" \"agentic.token.relationship\" \"service.name\" \"agentic.harness.name\" | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where 'agentic.token.relationship' IN (\"total\",\"exclusive\") | where \"$selected_user$\"==\"All\" OR identity==\"$selected_user$\" | where \"$selected_service$\"==\"All\" OR hkey==\"$selected_service$\" | stats sum(tokens) AS value BY hkey | eval harness=`harness_label(hkey)` | sort - value | table harness value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", harness=\"\"]",
                 "queryParameters": {
                     "earliest": "$tr.earliest$",
                     "latest": "$tr.latest$"
@@ -545,7 +575,17 @@
                 "position": {
                     "x": 10,
                     "y": 980,
-                    "w": 1010,
+                    "w": 780,
+                    "h": 240
+                }
+            },
+            {
+                "item": "viz_drift",
+                "type": "block",
+                "position": {
+                    "x": 800,
+                    "y": 980,
+                    "w": 220,
                     "h": 240
                 }
             },
