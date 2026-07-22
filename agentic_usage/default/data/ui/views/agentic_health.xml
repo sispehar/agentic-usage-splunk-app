@@ -1,0 +1,303 @@
+<dashboard version="2" theme="dark">
+    <label>Data Health</label>
+    <description>Ingest health and setup — is telemetry reaching the agentic indexes?</description>
+    <definition><![CDATA[{
+    "title": "Agentic Usage · Data Health",
+    "description": "",
+    "inputs": {
+        "input_theme": {
+            "options": {
+                "defaultValue": "#0a0c10",
+                "items": [
+                    {
+                        "label": "Dark",
+                        "value": "#0a0c10"
+                    },
+                    {
+                        "label": "Light",
+                        "value": "#f4f6f8"
+                    }
+                ],
+                "token": "theme"
+            },
+            "title": "Theme",
+            "type": "input.dropdown"
+        }
+    },
+    "defaults": {
+        "dataSources": {}
+    },
+    "visualizations": {
+        "viz_hp_points": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "METRIC POINTS · 24H",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "true",
+                "agentic_usage.cu_kpi.accentColor": "#28b6a4"
+            },
+            "dataSources": {
+                "primary": "ds_hp_points"
+            }
+        },
+        "viz_hp_events": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "EVENTS · 24H",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#3aa6c2"
+            },
+            "dataSources": {
+                "primary": "ds_hp_events"
+            }
+        },
+        "viz_hp_lastmetric": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "LAST METRIC",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#e6b24a"
+            },
+            "dataSources": {
+                "primary": "ds_hp_lastmetric"
+            }
+        },
+        "viz_hp_lastevent": {
+            "type": "agentic_usage.cu_kpi",
+            "options": {
+                "agentic_usage.cu_kpi.theme": "$theme$",
+                "agentic_usage.cu_kpi.label": "LAST EVENT",
+                "agentic_usage.cu_kpi.valueField": "value",
+                "agentic_usage.cu_kpi.hero": "false",
+                "agentic_usage.cu_kpi.accentColor": "#f2643d"
+            },
+            "dataSources": {
+                "primary": "ds_hp_lastevent"
+            }
+        },
+        "viz_hp_checklist": {
+            "type": "agentic_usage.cu_checklist",
+            "options": {
+                "agentic_usage.cu_checklist.theme": "$theme$",
+                "agentic_usage.cu_checklist.displayMode": "list",
+                "agentic_usage.cu_checklist.title": "Setup checklist",
+                "agentic_usage.cu_checklist.subtitle": "collector → metrics → events → identity"
+            },
+            "dataSources": {
+                "primary": "ds_hp_checklist"
+            }
+        },
+        "viz_hp_timeline": {
+            "type": "agentic_usage.cu_area",
+            "options": {
+                "agentic_usage.cu_area.theme": "$theme$",
+                "agentic_usage.cu_area.title": "Ingest volume · 24h",
+                "agentic_usage.cu_area.readField": "metrics",
+                "agentic_usage.cu_area.createField": "events",
+                "agentic_usage.cu_area.readLabel": "metric points",
+                "agentic_usage.cu_area.createLabel": "events",
+                "agentic_usage.cu_area.valueDivisor": "1",
+                "agentic_usage.cu_area.valueUnit": ""
+            },
+            "dataSources": {
+                "primary": "ds_hp_timeline"
+            }
+        },
+        "viz_hp_harness": {
+            "type": "agentic_usage.cu_feed",
+            "options": {
+                "agentic_usage.cu_feed.theme": "$theme$",
+                "agentic_usage.cu_feed.title": "Per-harness last seen",
+                "agentic_usage.cu_feed.subtitle": "7d window",
+                "agentic_usage.cu_feed.timeField": "Time",
+                "agentic_usage.cu_feed.userField": "User",
+                "agentic_usage.cu_feed.projectField": "Lane",
+                "agentic_usage.cu_feed.textField": "Event",
+                "agentic_usage.cu_feed.badgeField": "Badge",
+                "agentic_usage.cu_feed.accentColor": "#28b6a4",
+                "agentic_usage.cu_feed.maxRows": "30"
+            },
+            "dataSources": {
+                "primary": "ds_hp_harness"
+            }
+        }
+    },
+    "dataSources": {
+        "ds_hp_points": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "| mstats count(_value) AS v WHERE `agentic_metrics` metric_name=\"agentic.*\" span=1h | stats sum(v) AS t | where isnotnull(t) | eval value=case(t>=1000000, round(t/1000000,1).\"M\", t>=1000, round(t/1000,1).\"K\", true(), tostring(t)) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"0\"]",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_hp_events": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=\"agentic.*\" | stats count AS t | where t>0 | eval value=case(t>=1000000, round(t/1000000,1).\"M\", t>=1000, round(t/1000,1).\"K\", true(), tostring(t)) | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"0\"]",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_hp_lastmetric": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "| mstats count(_value) AS v WHERE `agentic_metrics` metric_name=\"agentic.*\" span=1m | stats max(_time) AS t | where isnotnull(t) | eval value=strftime(t,\"%H:%M\") | fields value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"—\"]",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_hp_lastevent": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "`agentic_data` event.name=\"agentic.*\" | head 1 | eval value=strftime(_time,\"%H:%M\") | table value | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\", value=\"—\"]",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_hp_checklist": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` (metric_name=\"otelcol_*\" OR metric_name=\"agentic.token.usage\") span=10m BY metric_name \"user.email\" \"user.id\" \"agentic.token.relationship\" | eval lane=if(like(metric_name,\"otelcol_%\"),\"collector\",\"harness\") | eval identity=case('user.email'!=\"__missing__\",'user.email','user.id'!=\"__missing__\",'user.id',true(),null()) | stats sum(points) AS cnt max(_time) AS last_seen sum(eval(if(isnotnull(identity),points,0))) AS id_cnt BY lane | append [ search `agentic_data` event.name=\"agentic.*\" | eval identity=coalesce('user.email','user.id') | stats count AS cnt max(_time) AS last_seen count(eval(isnotnull(identity))) AS id_cnt | eval lane=\"events\" ] | append [| makeresults count=4 | streamstats count AS ord0 | eval lane=case(ord0=1,\"collector\",ord0=2,\"harness\",ord0=3,\"events\",ord0=4,\"identity\"), cnt=0, id_cnt=0 | fields lane cnt id_cnt ] | stats sum(cnt) AS cnt max(last_seen) AS last_seen sum(id_cnt) AS id_cnt BY lane | appendpipe [ where lane==\"harness\" | eval lane=\"identity\" ] | stats sum(cnt) AS cnt max(last_seen) AS last_seen sum(id_cnt) AS id_cnt BY lane | eventstats max(eval(if(lane==\"collector\",cnt,0))) AS c_cnt max(eval(if(lane==\"harness\",cnt,0))) AS h_cnt | eval pct=if(lane==\"identity\" AND cnt>0, round(id_cnt/cnt*100), null()) | eval status=case(lane==\"collector\" AND cnt>0 AND last_seen>=relative_time(now(),\"-15m\"),\"OK\", lane==\"collector\" AND cnt>0,\"WARN\", lane==\"collector\" AND h_cnt>0,\"WARN\", lane==\"collector\",\"FAIL\", lane==\"harness\" AND cnt>0,\"OK\", lane==\"harness\" AND c_cnt>0,\"FAIL\", lane==\"harness\",\"WAIT\", lane==\"events\" AND cnt>0,\"OK\", lane==\"events\" AND h_cnt>0,\"FAIL\", lane==\"events\",\"WAIT\", lane==\"identity\" AND isnotnull(pct) AND pct>=90,\"OK\", lane==\"identity\" AND isnotnull(pct) AND pct>0,\"WARN\", lane==\"identity\" AND h_cnt>0,\"FAIL\", true(),\"WAIT\") | eval step=case(lane==\"collector\",\"1 · Collector → Splunk (otelcol self-metrics)\", lane==\"harness\",\"2 · Harness metrics (agentic.token.usage)\", lane==\"events\",\"3 · Agent events (index agentic)\", lane==\"identity\",\"4 · User identity on metrics\") | eval detail=case(lane==\"identity\" AND isnotnull(pct), pct.\"% of datapoints carry user.email / user.id\", cnt>0 AND isnotnull(last_seen), tostring(round(cnt),\"commas\").\" in 24h · last \".strftime(last_seen,\"%H:%M\"), true(), \"none in 24h\") | eval hint=case(lane==\"collector\" AND status==\"FAIL\",\"No collector traffic in 24h — start otelcol with otel/splunk.yaml and check SPLUNK_HEC_TOKEN / SPLUNK_HEC_URL and that indexes agentic + agentic_metrics exist||See README · Splunk setup and otel/README.md · Verify\", lane==\"collector\" AND status==\"WARN\" AND cnt==0,\"Harness metrics arrive but no otelcol self-metrics — the optional prometheus self-scrape is disabled in your overlay\", lane==\"collector\" AND status==\"WARN\",\"Collector self-metrics are stale — collector process stopped or HEC export failing\", lane==\"harness\" AND status==\"FAIL\",\"Collector is up but no harness telemetry — enable telemetry per harness: Claude family env vars in managed settings; Gemini settings.json telemetry block; Codex config.toml otel exporters||See README · Getting data in\", lane==\"harness\" AND status==\"WAIT\",\"Waiting for step 1\", lane==\"events\" AND status==\"FAIL\",\"Metrics flow but no events — set OTEL_LOGS_EXPORTER=otlp on Claude-family clients and keep the logs pipeline exporters from otel/splunk.yaml\", lane==\"events\" AND status==\"WAIT\",\"Waiting for step 2\", lane==\"identity\" AND status IN (\"WARN\",\"FAIL\"),\"Claude family needs the env vars in managed settings; Gemini reports user.email only with Google auth; Codex needs the x-user-email header||Do not deploy the low-cardinality-metrics collector profile with this app\", true(),\"\") | eval ord=case(lane==\"collector\",1,lane==\"harness\",2,lane==\"events\",3,lane==\"identity\",4) | sort ord | table step status detail hint",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_hp_timeline": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "| mstats count(_value) AS metrics WHERE `agentic_metrics` metric_name=\"agentic.*\" span=30m | append [ search `agentic_data` event.name=\"agentic.*\" | bin _time span=30m | stats count AS events BY _time ] | stats sum(metrics) AS metrics sum(events) AS events BY _time | eval metrics=coalesce(metrics,0), events=coalesce(events,0) | sort _time | eval hourLabel=strftime(_time,\"%a, %b %d · %H:%M\"), tickLabel=strftime(_time,\"%H:%M\") | table _time metrics events hourLabel tickLabel | appendpipe [| stats count | where count=0 | eval _status=\"Awaiting data\"]",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
+        "ds_hp_harness": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "| mstats fillnull_value=\"__missing__\" count(_value) AS points WHERE `agentic_metrics` metric_name=\"agentic.*\" span=30m BY \"service.name\" \"agentic.harness.name\" | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where isnotnull(hkey) | stats sum(points) AS cnt max(_time) AS last_seen BY hkey | eval lane=\"metrics\" | append [ search `agentic_data` event.name=\"agentic.*\" | eval svc0='service.name', hn0='agentic.harness.name' | eval hkey=`harness_key(svc0,hn0)` | where isnotnull(hkey) | stats count AS cnt max(_time) AS last_seen BY hkey | eval lane=\"events\" ] | where isnotnull(last_seen) | eval age=now()-last_seen | eval Badge=case(age<=3600,\"OK\", age<=86400,\"WARN\", true(),\"ERROR\") | eval Time=strftime(last_seen,\"%b %d %H:%M\") | eval Lane=lane | eval Event=tostring(round(cnt),\"commas\").if(lane==\"metrics\",\" metric pts · 7d\",\" events · 7d\") | eval User=`harness_label(hkey)` | sort User Lane | table Time User Lane Event Badge | appendpipe [| stats count | where count=0 | eval _status=\"No harness telemetry in 7d\", Time=\"\"]",
+                "queryParameters": {
+                    "earliest": "-7d@h",
+                    "latest": "now"
+                }
+            }
+        }
+    },
+    "layout": {
+        "type": "absolute",
+        "options": {
+            "display": "auto-scale",
+            "width": 1480,
+            "height": 720,
+            "backgroundColor": "$theme$",
+            "showTitleAndDescription": false
+        },
+        "globalInputs": [
+            "input_theme"
+        ],
+        "structure": [
+            {
+                "item": "viz_hp_points",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "w": 360,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_hp_events",
+                "type": "block",
+                "position": {
+                    "x": 380,
+                    "y": 10,
+                    "w": 360,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_hp_lastmetric",
+                "type": "block",
+                "position": {
+                    "x": 750,
+                    "y": 10,
+                    "w": 360,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_hp_lastevent",
+                "type": "block",
+                "position": {
+                    "x": 1120,
+                    "y": 10,
+                    "w": 350,
+                    "h": 130
+                }
+            },
+            {
+                "item": "viz_hp_checklist",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 150,
+                    "w": 730,
+                    "h": 560
+                }
+            },
+            {
+                "item": "viz_hp_timeline",
+                "type": "block",
+                "position": {
+                    "x": 750,
+                    "y": 150,
+                    "w": 720,
+                    "h": 240
+                }
+            },
+            {
+                "item": "viz_hp_harness",
+                "type": "block",
+                "position": {
+                    "x": 750,
+                    "y": 400,
+                    "w": 720,
+                    "h": 310
+                }
+            }
+        ]
+    },
+    "applicationProperties": {}
+}]]></definition>
+</dashboard>

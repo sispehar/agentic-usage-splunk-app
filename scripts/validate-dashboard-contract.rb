@@ -73,6 +73,14 @@ queries.each do |path, name, query|
   end
 end
 
+# Sanctioned probe datasources (see CLAUDE.md "Rules"): these searches
+# intentionally reference pre-normalization source keys and non-normalized
+# event-name shapes because their entire purpose is detecting contract drift
+# (NORMALIZATION.md "Drift signatures to monitor or query for"). They are
+# exempt from the forbidden-pattern and event-name-normalization scans ONLY;
+# every structural check above still applies. Do not add analytics searches.
+PROBE_EXEMPT = %w[ds_drift].freeze
+
 forbidden_patterns = {
   /metric_name=\\?"gen_ai\.client\.token\.usage\\?"/ =>
     "canonical Histogram is not the cross-harness accounting metric",
@@ -92,6 +100,8 @@ forbidden_patterns = {
 }.freeze
 
 queries.each do |path, name, query|
+  next if PROBE_EXEMPT.include?(name)
+
   forbidden_patterns.each do |pattern, reason|
     match = query.match(pattern)
     errors << "#{path} #{name}: #{reason}: #{match[0]}" if match

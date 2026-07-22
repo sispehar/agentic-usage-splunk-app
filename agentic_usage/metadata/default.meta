@@ -39,6 +39,8 @@ access = read : [ * ], write : [ admin, sc_admin ]
 
 
 
+
+
 [visualizations/cu_kpi]
 export = system
 
@@ -67,4 +69,7 @@ export = system
 export = system
 
 [visualizations/cu_ticker]
+export = system
+
+[visualizations/cu_checklist]
 export = system

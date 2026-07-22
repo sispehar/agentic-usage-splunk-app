@@ -1,0 +1,72 @@
+/* ── Agentic Usage design tokens (Terminal treatment) ── */
+.agentic-usage {
+  --bg: #0a0c10; --panel: #14181f; --panel-2: #1a1f28;
+  --line: rgba(255,255,255,.07); --line-2: rgba(255,255,255,.12);
+  --txt: #e9eef4; --txt-mid: #98a3b0; --txt-low: #5d6773;
+  --coral: #f2643d; --teal: #28b6a4; --cyan: #3aa6c2; --green: #52b487;
+  --gold: #e6b24a; --silver: #b9c4d0; --bronze: #cd8a55; --red: #e0584c;
+  --sans: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --display: 'JetBrains Mono', ui-monospace, monospace;
+  width: 100%; height: 100%;
+  font-family: var(--sans); color: var(--txt);
+  -webkit-font-smoothing: antialiased; box-sizing: border-box;
+}
+.agentic-usage * { box-sizing: border-box; }
+
+.cu-cl-root { position: relative; width: 100%; height: 100%; font-family: var(--sans); color: var(--txt); }
+
+/* ── list mode ── */
+.cu-cl-root.mode-list {
+  display: flex; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px 18px; overflow-y: auto;
+}
+.cu-cl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+.cu-cl-titles { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.cu-cl-title { font-family: var(--mono); text-transform: uppercase; letter-spacing: .14em; font-size: 11px; color: var(--txt-low); font-weight: 500; white-space: nowrap; }
+.cu-cl-sub { font-family: var(--mono); font-size: 10.5px; color: var(--txt-low); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cu-cl-count { font-family: var(--mono); font-size: 11px; color: var(--txt-mid); white-space: nowrap; }
+
+.cu-cl-rows { display: flex; flex-direction: column; }
+.cu-cl-row { padding: 13px 0 12px; border-top: 1px solid var(--line); }
+.cu-cl-row:first-child { border-top: none; }
+.cu-cl-main { display: flex; align-items: baseline; gap: 12px; }
+.cu-cl-step { font-size: 13.5px; font-weight: 500; color: var(--txt); min-width: 0; }
+.cu-cl-detail { font-family: var(--mono); font-size: 11px; color: var(--txt-mid); margin-left: auto; white-space: nowrap; }
+.cu-cl-row.st-wait .cu-cl-step { color: var(--txt-mid); }
+
+.cu-cl-badge {
+  font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  padding: 3px 8px; border-radius: 5px; white-space: nowrap; flex: none;
+}
+.cu-cl-badge.cs-ok   { color: var(--green); background: rgba(82,180,135,.14); }
+.cu-cl-badge.cs-warn { color: var(--gold);  background: rgba(230,178,74,.14); }
+.cu-cl-badge.cs-wait { color: var(--gold);  background: rgba(230,178,74,.09); opacity: .65; }
+.cu-cl-badge.cs-fail { color: var(--coral); background: rgba(242,100,61,.16); }
+
+.cu-cl-hint { margin-top: 8px; padding: 9px 12px; background: var(--panel-2); border-radius: 6px; border-left: 2px solid var(--line-2); }
+.cu-cl-row.st-fail .cu-cl-hint { border-left-color: var(--coral); }
+.cu-cl-row.st-warn .cu-cl-hint { border-left-color: var(--gold); }
+.cu-cl-hint-line { font-family: var(--mono); font-size: 11px; line-height: 1.55; color: var(--txt-mid); }
+.cu-cl-hint-line + .cu-cl-hint-line { margin-top: 4px; }
+
+/* ── banner mode ── */
+.cu-cl-banner {
+  display: flex; align-items: center; gap: 14px; width: 100%; height: 100%;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 0 18px;
+}
+.cu-cl-banner.sev-fail { border-left: 3px solid var(--coral); }
+.cu-cl-banner.sev-warn { border-left: 3px solid var(--gold); }
+.cu-cl-banner-txt { min-width: 0; }
+.cu-cl-banner-step { font-size: 14px; font-weight: 600; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cu-cl-banner-hint { font-family: var(--mono); font-size: 11px; color: var(--txt-mid); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cu-cl-link {
+  margin-left: auto; flex: none;
+  font-family: var(--mono); font-size: 12px; color: var(--teal); text-decoration: none;
+  border: 1px solid var(--line-2); border-radius: 6px; padding: 7px 13px;
+}
+.cu-cl-link:hover { background: var(--panel-2); text-decoration: none; color: var(--teal); }
+
+.cu-status { display: flex; align-items: center; justify-content: center; height: 100%; font-family: var(--mono); font-size: 12px; color: var(--txt-mid); text-align: center; }

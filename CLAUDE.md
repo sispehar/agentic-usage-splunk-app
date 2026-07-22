@@ -5,7 +5,10 @@ observability dashboards for agentic coding harnesses (Claude Code, Claude
 Desktop, Cowork, Gemini CLI, OpenAI Codex CLI), built entirely from custom
 visualizations, plus the Claude Code skill used to develop them. Telemetry is
 normalized upstream by the sibling `ai-harness-otel` collector config; the
-dashboards query only the normalized contract.
+dashboards query only the normalized contract. Three dashboards: Overview,
+Sessions, and Data Health (the setup/ingest-health screen; Overview/Sessions
+carry a self-hiding `cu_checklist` banner that links to it while no data
+arrives).
 
 ## Key Paths
 
@@ -25,11 +28,19 @@ dashboards query only the normalized contract.
   `agentic.*` metrics/events, and cataloged `gen_ai.*` attributes (see
   ai-harness-otel/ATTRIBUTE_REFERENCE.md). Never reference harness-native names
   (`claude_code.*`, `gemini_cli.*`, `codex.*`) or uncataloged pass-through
-  fields in dashboard SPL. **Single sanctioned exception:** the Overview's
+  fields in dashboard SPL. **Sanctioned exceptions:** the Overview's
   `ds_drift` Contract-drift panel deliberately probes the drift signatures
   NORMALIZATION.md tells consumers to query for (surviving raw source keys,
-  wildcard-suffixed renamed events) — do not extend that pattern to any other
-  search.
+  wildcard-suffixed renamed events — exempted via `PROBE_EXEMPT` in the
+  validator), and the Data Health page + `ds_banner` probes query `otelcol_*`
+  collector self-metrics, wildcard `agentic.*` names, and index presence to
+  diagnose ingest. Do not extend either pattern to any other search.
+- Run `ruby scripts/validate-dashboard-contract.rb` (pass the path to
+  ai-harness-otel/ATTRIBUTE_REFERENCE.md, or set
+  `AGENTIC_ATTRIBUTE_REFERENCE`) before committing any dashboard SPL change —
+  it gates contract-token cataloging, token-relationship gating, identity
+  fillnull sentinels, `[| mstats` subsearches, and pre-normalization field
+  names across all views.
 - Harness filtering/grouping goes through `harness_key(2)` (well-known
   `service.name` first, `agentic.harness.name` fallback for custom
   `OTEL_SERVICE_NAME`, raw name last) and labels through `harness_label(1)` —
@@ -44,4 +55,5 @@ dashboards query only the normalized contract.
 - Never read `config` in `formatData` — do it in `updateView`
 - 100% custom vizs (DOM or Canvas) — never native Splunk panels that break the typography; the app uses HYBRID (DOM text + Canvas charts)
 - Use `./agentic_usage/build.sh` to build & package — it rebuilds each viz with webpack, rewrites the property namespace to `agentic_usage.{viz}`, merges conf files, prepends fonts/theme CSS, and bumps the app version
-- New harness onboarded in the collector? App-side change is only: `harness_key(2)` + `harness_label(1)` macros + the Harness dropdown items in both dashboards (+ context-window lookup rows if it brings new models)
+- New harness onboarded in the collector? App-side change is only: `harness_key(2)` + `harness_label(1)` macros + the Harness dropdown items in both dashboards (+ context-window lookup rows if it brings new models). Data Health needs no edit — its per-harness board derives rows from `harness_key(2)`
+- New dashboard? Add it to the `DASHBOARDS` registry in `agentic_usage/build.sh` — the build regenerates `nav/default.xml` from that array and would otherwise drop the view from the nav

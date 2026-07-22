@@ -1,0 +1,41 @@
+<form class="splunk-formatter-section" section-label="Checklist">
+    <splunk-control-group label="Display Mode" help="list = full checklist panel; banner = self-hiding overlay strip (renders nothing while every row is OK)">
+        <splunk-radio-input name="{{VIZ_NAMESPACE}}.displayMode" value="list">
+            <option value="list">List</option>
+            <option value="banner">Banner</option>
+        </splunk-radio-input>
+    </splunk-control-group>
+    <splunk-control-group label="Title" help="List-mode header; leave blank to hide">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.title" value="Data Health"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Subtitle">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.subtitle" value=""></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Fields">
+    <splunk-control-group label="Step Field" help="Check title column">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.stepField" value="step"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Status Field" help="OK / WAIT / WARN / FAIL">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.statusField" value="status"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Detail Field" help="Right-aligned mono detail column">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.detailField" value="detail"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Hint Field" help="Setup instruction; || separates lines; shown when status is not OK">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.hintField" value="hint"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Banner Link">
+    <splunk-control-group label="Link View" help="View name the banner links to (letters, digits, - and _ only); blank hides the link">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.linkView" value="agentic_health"></splunk-text-input>
+    </splunk-control-group>
+    <splunk-control-group label="Link Label">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.linkLabel" value="Open Data Health →"></splunk-text-input>
+    </splunk-control-group>
+</form>
+<form class="splunk-formatter-section" section-label="Theme">
+    <splunk-control-group label="Theme" help="dark, light, or a page-background hex (driven by the dashboard $theme$ token)">
+        <splunk-text-input name="{{VIZ_NAMESPACE}}.theme" value="dark"></splunk-text-input>
+    </splunk-control-group>
+</form>

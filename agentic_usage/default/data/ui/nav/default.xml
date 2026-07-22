@@ -1,4 +1,5 @@
 <nav>
   <view name="agentic_overview" default="true" icon="chartpanels" />
   <view name="agentic_sessions" icon="pulse" />
+  <view name="agentic_health" icon="health" />
 </nav>

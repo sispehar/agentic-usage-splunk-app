@@ -116,3 +116,14 @@ display.visualizations.custom.agentic_usage.cu_ticker.accentColor = <string>
 display.visualizations.custom.agentic_usage.cu_ticker.liveColor = <string>
 display.visualizations.custom.agentic_usage.cu_ticker.theme = <string>
 
+display.visualizations.custom.agentic_usage.cu_checklist.displayMode = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.title = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.subtitle = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.stepField = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.statusField = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.detailField = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.hintField = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.linkView = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.linkLabel = <string>
+display.visualizations.custom.agentic_usage.cu_checklist.theme = <string>
+

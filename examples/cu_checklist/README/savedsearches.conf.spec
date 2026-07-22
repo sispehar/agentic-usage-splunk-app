@@ -1,0 +1,10 @@
+display.visualizations.custom.cu_checklist.cu_checklist.displayMode = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.title = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.subtitle = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.stepField = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.statusField = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.detailField = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.hintField = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.linkView = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.linkLabel = <string>
+display.visualizations.custom.cu_checklist.cu_checklist.theme = <string>

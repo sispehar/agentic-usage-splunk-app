@@ -12,7 +12,8 @@
       "cu_feed",
       "cu_bars",
       "cu_sessions",
-      "cu_ticker"
+      "cu_ticker",
+      "cu_checklist"
     ]
   },
   "vizs": [
@@ -25,6 +26,7 @@
     "cu_feed",
     "cu_bars",
     "cu_sessions",
-    "cu_ticker"
+    "cu_ticker",
+    "cu_checklist"
   ]
 }

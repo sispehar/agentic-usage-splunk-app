@@ -1,0 +1,29 @@
+{
+  "label": "Agentic Usage — Checklist",
+  "defaultSize": { "width": 730, "height": 460 },
+  "noDataMessage": "Awaiting data",
+  "dependencies": [],
+  "fields": [],
+  "formatter": [
+    { "name": "displayMode", "label": "Display Mode", "type": "select", "options": ["list", "banner"], "default": "list" },
+    { "name": "title", "label": "Title", "type": "text", "default": "Data Health" },
+    { "name": "subtitle", "label": "Subtitle", "type": "text", "default": "collector → metrics → events → identity" },
+    { "name": "stepField", "label": "Step Field", "type": "text", "default": "step" },
+    { "name": "statusField", "label": "Status Field", "type": "text", "default": "status" },
+    { "name": "detailField", "label": "Detail Field", "type": "text", "default": "detail" },
+    { "name": "hintField", "label": "Hint Field", "type": "text", "default": "hint" },
+    { "name": "linkView", "label": "Link View", "type": "text", "default": "agentic_health" },
+    { "name": "linkLabel", "label": "Link Label", "type": "text", "default": "Open Data Health →" },
+    { "name": "theme", "label": "Theme", "type": "select", "options": ["dark", "light"], "default": "dark" }
+  ],
+  "data": {
+    "mode": "multi_row",
+    "columns": ["step", "status", "detail", "hint"],
+    "sampleRows": [
+      ["1 · Collector → Splunk (otelcol self-metrics)", "OK", "8,412 pts · last 12:41", ""],
+      ["2 · Harness metrics (agentic.token.usage)", "FAIL", "none in 24h", "Collector is up but no harness telemetry — enable telemetry per harness: Claude family env vars in managed settings; Gemini settings.json telemetry block; Codex config.toml otel exporters||See README · Getting data in"],
+      ["3 · Agent events (index agentic)", "WAIT", "none in 24h", "Waiting for step 2"],
+      ["4 · User identity on metrics", "WAIT", "none in 24h", "Waiting for step 2"]
+    ]
+  }
+}

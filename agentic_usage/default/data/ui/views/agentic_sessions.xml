@@ -87,6 +87,18 @@
         "dataSources": {}
     },
     "visualizations": {
+        "viz_banner": {
+            "type": "agentic_usage.cu_checklist",
+            "options": {
+                "agentic_usage.cu_checklist.theme": "$theme$",
+                "agentic_usage.cu_checklist.displayMode": "banner",
+                "agentic_usage.cu_checklist.linkView": "agentic_health",
+                "agentic_usage.cu_checklist.linkLabel": "Open Data Health →"
+            },
+            "dataSources": {
+                "primary": "ds_banner"
+            }
+        },
         "viz_sess_ticker": {
             "type": "agentic_usage.cu_ticker",
             "options": {
@@ -224,6 +236,18 @@
         }
     },
     "dataSources": {
+        "ds_banner": {
+            "type": "ds.search",
+            "options": {
+                "refresh": "30s",
+                "refreshType": "delay",
+                "query": "| mstats count(_value) AS cnt WHERE `agentic_metrics` metric_name=\"agentic.*\" span=1d | stats sum(cnt) AS cnt | eval lane=\"metrics\" | append [ search `agentic_data` event.name=\"agentic.*\" | head 1 | stats count AS cnt | eval lane=\"events\" ] | append [| makeresults count=2 | streamstats count AS ord0 | eval lane=if(ord0=1,\"metrics\",\"events\"), cnt=0 | fields lane cnt ] | stats sum(cnt) AS cnt BY lane | eventstats max(eval(if(lane==\"metrics\",cnt,0))) AS m_cnt | eval status=case(cnt>0,\"OK\", lane==\"events\" AND m_cnt>0,\"WARN\", true(),\"FAIL\") | eval step=if(lane==\"metrics\",\"No telemetry is reaching the agentic indexes\",\"Metrics flow but no agent events are arriving\") | eval hint=if(lane==\"metrics\",\"Deploy the collector and point your harnesses at it — the Data Health page walks through it\",\"Enable the logs exporter on your harness clients — see Data Health\") | eval ord=if(lane==\"metrics\",1,2) | sort ord | table step status hint",
+                "queryParameters": {
+                    "earliest": "-24h",
+                    "latest": "now"
+                }
+            }
+        },
         "ds_userlist": {
             "type": "ds.search",
             "options": {
@@ -447,6 +471,16 @@
                     "y": 786,
                     "w": 890,
                     "h": 424
+                }
+            },
+            {
+                "item": "viz_banner",
+                "type": "block",
+                "position": {
+                    "x": 10,
+                    "y": 10,
+                    "w": 1460,
+                    "h": 196
                 }
             }
         ]

@@ -17,12 +17,13 @@ APP_NAME="agentic_usage"
 FONT_CSS="$REPO_ROOT/shared/agentic_usage_fonts.css"
 THEME_CSS="$REPO_ROOT/shared/agentic_usage_theme.css"
 
-APPS=( cu_kpi cu_leaderboard cu_stat cu_area cu_donut cu_heatmap cu_feed cu_bars cu_sessions cu_ticker )
+APPS=( cu_kpi cu_leaderboard cu_stat cu_area cu_donut cu_heatmap cu_feed cu_bars cu_sessions cu_ticker cu_checklist )
 
 # Dashboards in nav order: view name / rail icon
 DASHBOARDS=(
     "agentic_overview chartpanels"
     "agentic_sessions pulse"
+    "agentic_health health"
 )
 
 # --- Parse args -------------------------------------------------------------

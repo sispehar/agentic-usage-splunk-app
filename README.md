@@ -9,7 +9,7 @@ the OpenTelemetry GenAI semantic conventions by the
 config. The dashboards query only that normalized contract (`gen_ai.*` /
 `agentic.*` names) and never touch harness-native naming.
 
-Built entirely from 10 custom Canvas/DOM visualizations (no native Splunk
+Built entirely from 11 custom Canvas/DOM visualizations (no native Splunk
 panels), dark + light theme, Dashboard Studio v2.
 
 ## Dashboards
@@ -21,16 +21,22 @@ panels), dark + light theme, Dashboard Studio v2.
 - **Sessions** — live session board (context fill %, per-session estimated cost/tokens/
   tools), active sessions/users, burn rate, top sessions, event feed, live
   ticker.
+- **Data Health** — the setup screen: an ingest checklist (collector →
+  harness metrics → events → identity) with per-step instructions, ingest-rate
+  timeline, and per-harness last-seen board. See
+  [First run: Data Health](#first-run-data-health).
 
-Both carry a **Harness** filter (All / Claude Code / Claude Desktop / Cowork /
-Gemini CLI / Codex) and a user filter.
+Overview and Sessions carry a **Harness** filter (All / Claude Code / Claude
+Desktop / Cowork / Gemini CLI / Codex) and a user filter. While no telemetry
+is arriving, both show a banner linking to Data Health; the banner disappears
+on its own once data flows.
 
 ## What's inside
 
 | Path | Role |
 |---|---|
 | `agentic_usage/` | The deployable Splunk app (dashboards, conf, built viz bundles) |
-| `examples/cu_*/` | Source of truth for the 10 visualizations (standalone viz apps) |
+| `examples/cu_*/` | Source of truth for the 11 visualizations (standalone viz apps) |
 | `shared/` | Embedded fonts + light-theme CSS prepended to every viz at build |
 | `otel/` | Splunk deployment overlay for the ai-harness-otel collector base + deploy doc |
 | `test-harness.html` | Browser-based viz test harness (see TEST-HARNESS.md) |
@@ -50,6 +56,7 @@ Gemini CLI / Codex) and a user filter.
 | Activity Feed | `cu_feed` | Session events (errors, compactions, agents) |
 | Session Board | `cu_sessions` | Live session rows with context-fill meter |
 | Live Ticker | `cu_ticker` | Scrolling activity strip |
+| Checklist | `cu_checklist` | Ingest setup ladder + self-hiding no-data banner |
 
 ## Requirements
 
@@ -147,6 +154,31 @@ accounting. Searches include only `total` and `exclusive`
 `agentic.token.relationship` values in overall totals; `subset` categories are
 used only for breakdowns such as cache ratio. This avoids counting cached or
 reasoning tokens twice.
+
+## First run: Data Health
+
+Install the app before any telemetry exists — that's the expected order. Open
+**Data Health** (third nav entry) and work the checklist top-down; each step
+turns OK as the pipeline comes up:
+
+1. **Collector → Splunk** — the collector's own `otelcol_*` self-metrics reach
+   `agentic_metrics` (proves otelcol is running and HEC export works, even
+   before any harness connects).
+2. **Harness metrics** — `agentic.token.usage` datapoints arrive.
+3. **Agent events** — `agentic.*` events arrive in `index=agentic`.
+4. **User identity** — the share of metric datapoints carrying
+   `user.email`/`user.id`.
+
+Each failing step shows its fix inline (collector env vars, per-harness
+telemetry settings, logs exporter, identity headers). Until steps 1–3 pass,
+Overview and Sessions display a banner linking here; it renders nothing once
+data flows. After setup, the page stays useful as ingest observability:
+metric/event volume tiles, a 24 h ingest-volume timeline, and a per-harness
+last-seen board (OK ≤ 1 h · WARN ≤ 24 h · ERROR older).
+
+Dashboard-editor note: the banner is an invisible block overlaid on each
+dashboard's top row (last entry in the layout `structure` array) — in the
+Studio editor it sits above the KPI tiles by design.
 
 ## Deployment invariants & data caveats
 
