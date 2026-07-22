@@ -5,10 +5,11 @@
 #
 #   export SPLUNK_HEC_TOKEN=...
 #   export SPLUNK_HEC_URL=https://<splunk-host>:8088/services/collector
-#   otelcol-contrib --config /path/to/ai-harness-otel/config/normalize.yaml \
+#   otelcol-contrib --config /path/to/ai-harness-otel/config/collector.yaml \
 #                   --config otel/splunk.yaml
 #
-# Pin the normalize.yaml you deploy (git tag / commit) — see otel/README.md.
+# Pin the collector.yaml contract you deploy (git tag / commit) — see
+# otel/README.md.
 #
 # MERGE SEMANTICS: maps merge per-key, lists replace wholesale. That is why
 # every pipeline's exporters list is restated below (the logs pipeline MUST

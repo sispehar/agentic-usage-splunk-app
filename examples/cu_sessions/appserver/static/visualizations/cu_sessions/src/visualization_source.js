@@ -1,9 +1,9 @@
 /*
  * Agentic Usage — Live Session Board (DOM custom visualization)
  *
- * One row per active Claude session: pulse dot (solid pulsing while the
+ * One row per active agent session: pulse dot (solid pulsing while the
  * session is active, dimmed with an "idle Xm" label otherwise), user, model
- * chip, terminal, duration, animated context-usage bar (teal → gold → coral
+ * chip, provider, duration, animated context-usage bar (teal → gold → coral
  * as the window fills), cost, tool/subagent counts, error badge and the last
  * tool used.
  *
@@ -13,7 +13,7 @@
  * keeps the idle labels and pulse dots honest between search refreshes.
  *
  * Expected SPL columns (multi-row, fixed names):
- *   session.id user service term model started last_seen cost tokens prompts
+ *   session.id user service provider model started last_seen cost tokens prompts
  *   tools errors subagents compactions ctx_tokens ctx_pct last_tool
  * (`started` / `last_seen` are epoch seconds.)
  */
@@ -63,11 +63,11 @@ define([
         return String(Math.round(v));
     }
 
-    var FIELDS = ['session.id', 'user', 'service', 'term', 'model', 'started', 'last_seen',
+    var FIELDS = ['session.id', 'user', 'service', 'provider', 'model', 'started', 'last_seen',
         'cost', 'tokens', 'prompts', 'tools', 'errors', 'subagents', 'compactions',
         'ctx_tokens', 'ctx_pct', 'last_tool'];
 
-    var COL_LABELS = ['', 'USER', 'MODEL', 'TERM', 'DUR', 'CONTEXT', 'COST', 'TOOLS', 'AGENTS', 'ERR', 'LAST TOOL'];
+    var COL_LABELS = ['', 'USER', 'MODEL', 'PROVIDER', 'DUR', 'CONTEXT', 'COST', 'TOOLS', 'AGENTS', 'ERR', 'LAST TOOL'];
 
     return SplunkVisualizationBase.extend({
 
@@ -166,7 +166,7 @@ define([
                     sid: String(sid),
                     user: cell(r, 'user') || '—',
                     service: cell(r, 'service') || '',
-                    term: cell(r, 'term') || '—',
+                    provider: cell(r, 'provider') || '—',
                     model: cell(r, 'model') || '',
                     started: num(cell(r, 'started')),
                     last_seen: num(cell(r, 'last_seen')),
@@ -263,7 +263,7 @@ define([
             rec.user.textContent = s.user;
             rec.chip.textContent = s.model || '—';
             rec.chip.className = 'cu-chip' + (s.model ? '' : ' dim');
-            rec.term.textContent = s.term;
+            rec.term.textContent = s.provider;
             rec.dur.textContent = fmtDur(s.last_seen - s.started);
             rec.cost.textContent = fmtCost(s.cost);
             rec.tools.textContent = s.tools ? String(Math.round(s.tools)) : '—';

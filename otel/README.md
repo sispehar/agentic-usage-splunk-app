@@ -14,7 +14,7 @@ overlay ([`splunk.yaml`](splunk.yaml)).
    ```bash
    git clone https://github.com/sispehar/ai-harness-otel
    # or, during local development, use the sibling checkout:
-   #   ../ai-harness-otel/config/normalize.yaml
+   #   ../ai-harness-otel/config/collector.yaml
    ```
 
 2. **Create the Splunk indexes** (see the main README): `agentic` (events) and
@@ -28,7 +28,7 @@ overlay ([`splunk.yaml`](splunk.yaml)).
    export SPLUNK_HEC_TOKEN=...
    export SPLUNK_HEC_URL=https://<splunk-host>:8088/services/collector
    otelcol-contrib \
-     --config ../ai-harness-otel/config/normalize.yaml \
+     --config ../ai-harness-otel/config/collector.yaml \
      --config otel/splunk.yaml
    ```
 
@@ -51,22 +51,32 @@ In Splunk:
 ```spl
 | mcatalog values(metric_name) WHERE index=agentic_metrics
 ```
-→ expect `gen_ai.client.token.usage`, `agentic.cost.usage`,
-`agentic.lines_of_code.count`, `agentic.session.count` (+ `agentic.active_time.total`,
-`agentic.commit.count`, … and `otelcol_*` self-metrics).
+→ expect `agentic.token.usage`, `agentic.cost.estimated`,
+`agentic.code.lines.changed`, `agentic.session.started`,
+`agentic.active_time`, `agentic.vcs.commit.created`, and other cataloged
+metrics. Native `gen_ai.client.token.usage` Histograms may also be present,
+along with `otelcol_*` self-metrics.
 
 ```spl
 index=agentic | stats count by event.name, service.name
 ```
-→ expect normalized short names (`api_request`, `user_prompt`, `tool_result`,
-`tool_decision`, `session_start`, …) plus harness-prefixed pass-throughs
+→ expect normalized full names (`agentic.api_request`, `agentic.user_prompt`,
+`agentic.tool_result`, `agentic.tool_decision`, `agentic.session_started`, …)
+plus harness-prefixed pass-throughs
 (`claude_code.*`, `gemini_cli.*`, `codex.*`) — and one row per active harness
 in `service.name`.
 
-Double-count sanity check (per harness, same time window): event-side
-`stats sum('gen_ai.usage.input_tokens')` vs
-`| mstats sum(_value) WHERE index=agentic_metrics metric_name="gen_ai.client.token.usage" gen_ai.token.type=input`
-should agree within an export interval.
+Accounting sanity check: overall token totals must use the custom additive Sum
+and exclude overlapping subsets:
+
+```spl
+| mstats sum(_value) AS tokens WHERE index=agentic_metrics metric_name="agentic.token.usage" BY agentic.token.relationship agentic.token.type service.name
+| where 'agentic.token.relationship' IN ("total", "exclusive")
+| stats sum(tokens) BY service.name
+```
+
+Never add `subset` series (cache-read or reasoning) to their corresponding
+totals.
 
 ## Notes
 

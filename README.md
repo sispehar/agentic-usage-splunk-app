@@ -14,11 +14,11 @@ panels), dark + light theme, Dashboard Studio v2.
 
 ## Dashboards
 
-- **Overview** — distinct users, total tokens, cost, net lines of code, cache
+- **Overview** — distinct users, total tokens, estimated cost, net lines of code, cache
   hit ratio, team leaderboard, token timeline, rate-limit friction, adoption,
   model mix, activity heatmap, and the **Harness Mix** donut (token share per
   harness).
-- **Sessions** — live session board (context fill %, per-session cost/tokens/
+- **Sessions** — live session board (context fill %, per-session estimated cost/tokens/
   tools), active sessions/users, burn rate, top sessions, event feed, live
   ticker.
 
@@ -128,19 +128,28 @@ short version:
 - **Codex CLI** — `config.toml` `[otel]`: set `exporter`, **`metrics_exporter`**
   (defaults to OpenAI's own `statsig`!), and `trace_exporter` to `otlp-grpc`,
   plus the **`x-user-email` header** — Codex has no built-in user identity, and
-  without the header its usage lands under `user.email="unknown"`.
+  without the header its `user.email` remains absent.
 
-The normalized contract (event names, `gen_ai.*` attributes, metric names,
-divergences from the spec) is documented in
-[ai-harness-otel/NORMALIZATION.md](https://github.com/sispehar/ai-harness-otel/blob/main/NORMALIZATION.md).
+The normalized contract's exhaustive backend-facing catalog is documented in
+[ai-harness-otel/ATTRIBUTE_REFERENCE.md](https://github.com/sispehar/ai-harness-otel/blob/main/ATTRIBUTE_REFERENCE.md),
+with mapping behavior and failure modes in
+[NORMALIZATION.md](https://github.com/sispehar/ai-harness-otel/blob/main/NORMALIZATION.md).
+
+The dashboards use the additive `agentic.token.usage` Sum for cross-harness
+accounting. Searches include only `total` and `exclusive`
+`agentic.token.relationship` values in overall totals; `subset` categories are
+used only for breakdowns such as cache ratio. This avoids counting cached or
+reasoning tokens twice.
 
 ## Known per-harness gaps (iteration 1)
 
-- **Cost is Claude-only** — Gemini/Codex report no cost telemetry, so the cost
+- **Estimated cost is Claude-only** — Gemini/Codex report no cost telemetry, so the cost
   KPI, burn rate, and leaderboard cost column under-count for them.
-- **Codex** reports no terminal type (board shows "—") and fewer event kinds
-  (no compaction/subagent/permission events); its per-response `input_tokens`
-  may be cache-inclusive, so context-fill % is approximate.
+- **Provider** appears on the session board only when the harness reports
+  `gen_ai.provider.name` (or a trusted gateway supplies it). The collector does
+  not infer provider from the harness vendor.
+- **Codex** reports fewer event kinds (no compaction/subagent/permission
+  events); its per-response input total can make context-fill % approximate.
 - **Lines of code** come from Claude and Gemini only; commits/PRs from Claude
   only.
 
@@ -155,6 +164,13 @@ python3 -m http.server 8080   # then open test-harness.html
 
 See `TEST-HARNESS.md`, `EMBEDDING.md`, and the `splunk-viz` skill for the full
 workflow.
+
+Validate every production data-source search against a sibling collector
+checkout before committing:
+
+```bash
+scripts/validate-dashboard-contract.rb ../ai-harness-otel/ATTRIBUTE_REFERENCE.md
+```
 
 ## License
 
